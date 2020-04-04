@@ -1,6 +1,10 @@
 package com.bookstore.service;
 
 import com.bookstore.bean.Book;
+import com.bookstore.bean.Category;
+
+import java.util.List;
+import java.util.Map;
 
 public interface BookService {
     int deleteByPrimaryKey(Long id);
@@ -11,7 +15,11 @@ public interface BookService {
 
     Book selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(Book record);
+    List<Book> listBooksByPage(Map<String, Object> map);
+
+    List<Book> listBooks();
+
+    int updateByPrimaryKeySelective(Book book);
 
     int updateByPrimaryKey(Book record);
 }

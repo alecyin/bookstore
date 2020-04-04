@@ -31,6 +31,28 @@
     delete from book
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <select id="listBooks" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from book
+  </select>
+  <select id="listBooksByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from book
+    <where>
+      <if test="keyword != null and keyword != ''">
+        `name` = #{keyword,jdbcType=VARCHAR}
+        or
+        isbn = #{keyword,jdbcType=VARCHAR}
+        or
+        isbn = #{keyword,jdbcType=VARCHAR}
+        or
+        author = #{keyword,jdbcType=VARCHAR}
+      </if>
+    </where>
+    limit #{currentIndex}, #{pageSize}
+  </select>
   <insert id="insert" parameterType="com.bookstore.bean.Book">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()

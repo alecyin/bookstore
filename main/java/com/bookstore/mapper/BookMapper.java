@@ -4,6 +4,9 @@ import com.bookstore.bean.Book;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 @Repository
 public interface BookMapper {
@@ -14,6 +17,10 @@ public interface BookMapper {
     int insertSelective(Book record);
 
     Book selectByPrimaryKey(Long id);
+
+    List<Book> listBooksByPage(Map<String, Object> map);
+
+    List<Book> listBooks();
 
     int updateByPrimaryKeySelective(Book record);
 

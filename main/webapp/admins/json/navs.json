@@ -27,7 +27,7 @@
 		{
 			"title": "书籍管理",
 			"icon": "icon-text",
-			"href": "/book/list",
+			"href": "/books/list",
 			"spread": false
 		},{
 			"title": "订单管理",
