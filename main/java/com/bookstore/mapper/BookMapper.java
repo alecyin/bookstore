@@ -22,9 +22,7 @@ public interface BookMapper {
 
     List<Book> listBooks();
 
-    int updateByPrimaryKeySelective(Book record);
-
-    int updateByPrimaryKeyWithBLOBs(Book record);
+    int updateByPrimaryKeySelective(Book book);
 
     int updateByPrimaryKey(Book record);
 }

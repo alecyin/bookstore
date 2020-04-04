@@ -56,6 +56,12 @@
 			</div>
 		</div>
 		<div class="layui-form-item magt3">
+			<label class="layui-form-label">单价</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input" id="price" lay-verify="price" placeholder="请输入单价">
+			</div>
+		</div>
+		<div class="layui-form-item magt3">
 			<label class="layui-form-label">展示图</label>
 			<div class="layui-upload">
 				<button type="button" class="layui-btn" id="test1">选择图片</button>
@@ -101,6 +107,7 @@
 					sketch: $('#sketch').val(),
 					isbn: $('#isbn').val(),
 					pubdate: $('#pubdate').val(),
+					price: $('#price').val()
 				}
 			}
 			,done: function(res){

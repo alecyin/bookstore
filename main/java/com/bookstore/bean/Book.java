@@ -1,6 +1,7 @@
 package com.bookstore.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Book implements Serializable {
@@ -17,6 +18,8 @@ public class Book implements Serializable {
     private Date pubdate;
 
     private String thumbnail;
+
+    private BigDecimal price;
 
     private String sketch;
 
@@ -78,6 +81,14 @@ public class Book implements Serializable {
         this.thumbnail = thumbnail;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public String getSketch() {
         return sketch;
     }
@@ -99,6 +110,7 @@ public class Book implements Serializable {
         sb.append(", author=").append(author);
         sb.append(", pubdate=").append(pubdate);
         sb.append(", thumbnail=").append(thumbnail);
+        sb.append(", price=").append(price);
         sb.append(", sketch=").append(sketch);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

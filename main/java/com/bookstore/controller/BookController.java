@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -44,12 +45,14 @@ public class BookController {
                    @RequestParam("category_id") Long categoryId,
                    @RequestParam("sketch") String sketch,
                    @RequestParam("isbn") String isbn,
+                   @RequestParam("price") BigDecimal price,
                    @RequestParam("pubdate") String pubdate,
                    HttpServletRequest request) throws IOException, ParseException {
         Book book = new Book();
         book.setName(name);
         book.setAuthor(author);
         book.setCategoryId(categoryId);
+        book.setPrice(price);
         book.setIsbn(isbn);
         book.setPubdate(new SimpleDateFormat("yyyy-MM-dd").parse(pubdate));
         book.setSketch(sketch);
@@ -138,6 +141,7 @@ public class BookController {
             jsonObject1.put("sketch", book.getSketch());
             jsonObject1.put("thumbnail", book.getThumbnail());
             jsonObject1.put("categoryId", book.getCategoryId());
+            jsonObject1.put("price", book.getPrice());
             jsonObject1.put("isbn", book.getIsbn());
             jsonObject1.put("categoryName", categoryService.
                     selectByPrimaryKey(book.getCategoryId()).getName());

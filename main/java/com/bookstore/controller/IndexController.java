@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String customerIndex() {
-        return "customers/index";
+        return "customers/Home/index";
     }
 
     @RequestMapping(value = "/admins", method = RequestMethod.GET)

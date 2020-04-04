@@ -85,6 +85,7 @@
 					}
 				},
 				{ field: 'sketch', title: '简介' },
+				{ field: 'price', title: '单价/元' },
 				{ title: '操作', width: 170, templet: '#bookListBar', fixed: "right", align: "center" }
 			]]
 		});
@@ -157,6 +158,7 @@
 					body.find("#pubdate").val(DateFormat(edit.pubdate));
 					body.find("#sketch").val(edit.sketch);
 					body.find("#isbn").val(edit.isbn);
+					body.find("#price").val(edit.price);
 					body.find("#category").val(edit.category);
 					form.render();
 					setTimeout(function () {

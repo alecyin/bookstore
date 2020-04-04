@@ -6,32 +6,15 @@
     <result column="category_id" jdbcType="BIGINT" property="categoryId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="isbn" jdbcType="CHAR" property="isbn" />
-    <result column="sketch" jdbcType="LONGVARCHAR" property="sketch" />
     <result column="author" jdbcType="VARCHAR" property="author" />
     <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
     <result column="thumbnail" jdbcType="CHAR" property="thumbnail" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bookstore.bean.Book">
     <result column="sketch" jdbcType="LONGVARCHAR" property="sketch" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, category_id, `name`, isbn, author, pubdate, thumbnail, sketch
+    id, category_id, `name`, isbn, author, pubdate, thumbnail, price, sketch
   </sql>
-  <sql id="Blob_Column_List">
-    sketch
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from book
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from book
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
   <select id="listBooks" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -54,16 +37,26 @@
     </where>
     limit #{currentIndex}, #{pageSize}
   </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from book
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from book
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <insert id="insert" parameterType="com.bookstore.bean.Book">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into book (category_id, `name`, isbn, 
       author, pubdate, thumbnail, 
-      sketch)
+      price, sketch)
     values (#{categoryId,jdbcType=BIGINT}, #{name,jdbcType=CHAR}, #{isbn,jdbcType=CHAR}, 
       #{author,jdbcType=VARCHAR}, #{pubdate,jdbcType=TIMESTAMP}, #{thumbnail,jdbcType=CHAR}, 
-      #{sketch,jdbcType=LONGVARCHAR})
+      #{price,jdbcType=DECIMAL}, #{sketch,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bookstore.bean.Book">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -89,6 +82,9 @@
       <if test="thumbnail != null">
         thumbnail,
       </if>
+      <if test="price != null">
+        price,
+      </if>
       <if test="sketch != null">
         sketch,
       </if>
@@ -111,6 +107,9 @@
       </if>
       <if test="thumbnail != null">
         #{thumbnail,jdbcType=CHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
       </if>
       <if test="sketch != null">
         #{sketch,jdbcType=LONGVARCHAR},
@@ -138,6 +137,9 @@
       <if test="thumbnail != null">
         thumbnail = #{thumbnail,jdbcType=CHAR},
       </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
       <if test="sketch != null">
         sketch = #{sketch,jdbcType=LONGVARCHAR},
       </if>
@@ -152,6 +154,7 @@
       author = #{author,jdbcType=VARCHAR},
       pubdate = #{pubdate,jdbcType=TIMESTAMP},
       thumbnail = #{thumbnail,jdbcType=CHAR},
+      price = #{price,jdbcType=DECIMAL},
       sketch = #{sketch,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -162,7 +165,8 @@
       isbn = #{isbn,jdbcType=CHAR},
       author = #{author,jdbcType=VARCHAR},
       pubdate = #{pubdate,jdbcType=TIMESTAMP},
-      thumbnail = #{thumbnail,jdbcType=CHAR}
+      thumbnail = #{thumbnail,jdbcType=CHAR},
+      price = #{price,jdbcType=DECIMAL}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
