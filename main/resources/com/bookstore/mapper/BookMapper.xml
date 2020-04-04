@@ -6,6 +6,7 @@
     <result column="category_id" jdbcType="BIGINT" property="categoryId" />
     <result column="name" jdbcType="CHAR" property="name" />
     <result column="isbn" jdbcType="CHAR" property="isbn" />
+    <result column="sketch" jdbcType="LONGVARCHAR" property="sketch" />
     <result column="author" jdbcType="VARCHAR" property="author" />
     <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
     <result column="thumbnail" jdbcType="CHAR" property="thumbnail" />
@@ -14,7 +15,7 @@
     <result column="sketch" jdbcType="LONGVARCHAR" property="sketch" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, category_id, `name`, isbn, author, pubdate, thumbnail
+    id, category_id, `name`, isbn, author, pubdate, thumbnail, sketch
   </sql>
   <sql id="Blob_Column_List">
     sketch

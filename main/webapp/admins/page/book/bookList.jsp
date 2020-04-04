@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>类别列表</title>
+	<title>书籍列表</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -25,7 +25,7 @@
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
 			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal add_btn">添加类别</a>
+				<a class="layui-btn layui-btn-normal add_btn">添加书籍</a>
 			</div>
 			<div class="layui-inline">
 					<button type="button" class="layui-btn" id="upload_btn">批量上传</button>
@@ -35,9 +35,9 @@
 			</div>
 		</form>
 	</blockquote>
-	<table id="categoryList" lay-filter="categoryList"></table>
+	<table id="bookList" lay-filter="bookList"></table>
 	<!--操作-->
-	<script type="text/html" id="categoryListBar">
+	<script type="text/html" id="bookListBar">
 		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 	</script>
@@ -52,28 +52,65 @@
 				upload = layui.upload,
 				table = layui.table;
 
-		//类别列表
+		//书籍列表
 		var tableIns = table.render({
-			elem: '#categoryList',
-			url: '/categories/table-data',
+			elem: '#bookList',
+			url: '/books/table-data',
 			cellMinWidth: 95,
 			page: true,
 			height: "full-125",
 			limit: 20,
 			limits: [10, 15, 20, 25],
-			id: "categoryListTable",
+			id: "bookListTable",
 			cols: [[
 				{ type: "checkbox", fixed: "left", width: 50 },
 				{ field: 'id', title: 'ID', width: 60, align: "center" },
-				{ field: 'name', title: '类别名称' },
-				{ title: '操作', width: 170, templet: '#categoryListBar', fixed: "right", align: "center" }
+				{ field: 'name', title: '书籍名称' },
+				{ field: 'author', title: '作者' },
+				{ field: 'categoryName', title: '类别' },
+				{ field: 'isbn', title: '出版社' },
+				{ field: 'pubdate', title: '出版日期',templet:function (d){
+						return DateFormat(d.pubdate);
+					} },
+				{
+					field: 'thumbnail',
+					title: '展示缩略图',
+					width: 100,
+					align: 'center',
+					templet: function(d) {
+						var url ="/admins/images/"+d.thumbnail+".jpg";
+						return '<a href="' + url + '" target="_blank " title="点击查看">' +
+								'<img src="' + url + '" style="height:20px;" />' +
+								'</a>';
+					}
+				},
+				{ field: 'sketch', title: '简介' },
+				{ title: '操作', width: 170, templet: '#bookListBar', fixed: "right", align: "center" }
 			]]
 		});
 
-		//搜索【此功能需要后台配合，所以暂时没有动态效果演示】
+
+		// 数据表单时间戳转换为日期显示
+		function DateFormat(sjc){
+			var date = new Date(sjc);
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			m = m<10?'0'+m:m;
+			var d = date.getDate();
+			d = d<10?("0"+d):d;
+			var h = date.getHours();
+			h = h<10?("0"+h):h;
+			var min = date.getMinutes();
+			min = min<10?("0"+min):min;
+			var s = date.getSeconds();
+			s = s<10?("0"+s):s;
+			var str = y+"-"+m+"-"+d;
+			return str;
+		}
+
 		$(".search_btn").on("click", function () {
 			if ($(".searchVal").val() != '') {
-				table.reload("categoryListTable", {
+				table.reload("bookListTable", {
 					page: {
 						curr: 1 //重新从第 1 页开始
 					},
@@ -86,15 +123,15 @@
 			}
 		});
 		
-		//添加类别
-		function addCategory(edit) {
+		//添加书籍
+		function addBook(edit) {
 			var index = layui.layer.open({
-				title: "添加类别",
+				title: "添加书籍",
 				type: 2,
-				content: "/categories/categoryAdd",
+				content: "/books/bookAdd",
 				success: function (layero, index) {
 					setTimeout(function () {
-						layui.layer.tips('点击此处返回类别列表', '.layui-layer-setwin .layui-layer-close', {
+						layui.layer.tips('点击此处返回书籍列表', '.layui-layer-setwin .layui-layer-close', {
 							tips: 3
 						});
 					}, 500)
@@ -106,19 +143,24 @@
 				layui.layer.full(index);
 			})
 		}
-		//编辑类别信息
-		function editCategory(edit) {
+		//编辑书籍信息
+		function editBook(edit) {
 			var index = layui.layer.open({
-				title: "编辑类别信息",
+				title: "编辑书籍信息",
 				type: 2,
-				content: "/categories/categoryEdit",
+				content: "/books/bookEdit/" + edit.id,
 				success: function (layero, index) {
 					var body = layui.layer.getChildFrame('body', index);
-					body.find("#name").val(edit.name);
 					body.find("#id").val(edit.id);
+					body.find("#name").val(edit.name);
+					body.find("#author").val(edit.author);
+					body.find("#pubdate").val(DateFormat(edit.pubdate));
+					body.find("#sketch").val(edit.sketch);
+					body.find("#isbn").val(edit.isbn);
+					body.find("#category").val(edit.category);
 					form.render();
 					setTimeout(function () {
-						layui.layer.tips('点击此处返回类别列表', '.layui-layer-setwin .layui-layer-close', {
+						layui.layer.tips('点击此处返回书籍列表', '.layui-layer-setwin .layui-layer-close', {
 							tips: 3
 						});
 					}, 500)
@@ -131,42 +173,42 @@
 			})
 		}
 		$(".add_btn").click(function () {
-			addCategory();
+			addBook();
 		})
 
 		//批量删除
 		$(".delAll_btn").click(function () {
-			var checkStatus = table.checkStatus('categoryListTable'),
+			var checkStatus = table.checkStatus('bookListTable'),
 					data = checkStatus.data,
 					ids = "";
 			if (data.length > 0) {
 				for (var i in data) {
 					ids += "-" + data[i].id;
 				}
-				layer.confirm('确定删除选中的类别？', { icon: 3, title: '提示信息' }, function (index) {
-					 $.get("/categories/del",{
-						 ids : ids  //将需要删除的categoryId作为参数传入
+				layer.confirm('确定删除选中的书籍？', { icon: 3, title: '提示信息' }, function (index) {
+					 $.get("/books/del",{
+						 ids : ids  //将需要删除的bookId作为参数传入
 					 },function(data){
 					tableIns.reload();
 					layer.close(index);
 					 })
 				})
 			} else {
-				layer.msg("请选择需要删除的类别");
+				layer.msg("请选择需要删除的书籍");
 			}
 		})
 
 		//列表操作
-		table.on('tool(categoryList)', function (obj) {
+		table.on('tool(bookList)', function (obj) {
 			var layEvent = obj.event,
 					data = obj.data;
 
 			if (layEvent === 'edit') { //编辑
-				editCategory(data);
+				editBook(data);
 			} else if (layEvent === 'del') { //删除
-				layer.confirm('确定删除此类别？', { icon: 3, title: '提示信息' }, function (index) {
-					$.get("/categories/del",{
-					     ids : data.id  //将需要删除的categoryId作为参数传入
+				layer.confirm('确定删除此书籍？', { icon: 3, title: '提示信息' }, function (index) {
+					$.get("/books/del",{
+					     ids : data.id  //将需要删除的bookId作为参数传入
 					 },function(data){
 					tableIns.reload();
 					layer.close(index);
