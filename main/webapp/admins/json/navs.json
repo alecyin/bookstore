@@ -1,0 +1,44 @@
+{
+	"contentManagement": [{
+			"title": "用户管理",
+			"icon": "&#xe630;",
+			"href": "",
+			"spread": false,
+			"children": [{
+					"title": "顾客管理",
+					"icon": "&#xe613;",
+					"href": "/customers/list",
+					"spread": false
+				},
+				{
+					"title": "管理员管理",
+					"icon": "icon-text",
+					"href": "/admin/list",
+					"spread": false
+				}
+			]
+		},
+		{
+			"title": "类别管理",
+			"icon": "icon-text",
+			"href": "/categories/list",
+			"spread": false
+		},
+		{
+			"title": "书籍管理",
+			"icon": "icon-text",
+			"href": "/book/list",
+			"spread": false
+		},{
+			"title": "订单管理",
+			"icon": "icon-text",
+			"href": "/order/list",
+			"spread": false
+		},{
+			"title": "留言管理",
+			"icon": "icon-text",
+			"href": "/msg/list",
+			"spread": false
+		}
+	]
+}

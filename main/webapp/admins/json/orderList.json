@@ -1,0 +1,25 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 1,
+    "data": [
+      {
+        "orderId":1,
+        "customerName":"鲁西兽药",
+        "bussinessType":"出口订舱",
+        "vessel":"FARNKFURT EXPRESS",
+        "voyage":"V.050W",
+        "agency":"霍托",
+        "BLNo":"M240073718",
+        "loadPort":"青岛港",
+        "destPort":"Alexandria,Egypt",
+        "jdDate":"2018-02-06",
+        "jgDate":"2018-02-02下午3点前入货",
+        "containerCount":"20*20GP 2*40HQ",
+        "stationName":"外运",
+        "contact":"孙洪江",
+        "tel":"86912857",
+        "remark":""
+      }
+    ]
+  }

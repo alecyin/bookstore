@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>编辑入货通知</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="../../css/public.css" media="all" />
+</head>
+
+<body class="childrenBody">
+    <form class="layui-form" id="editNoticeForm" style="width:80%;">
+        <div class="layui-row ">
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">ID</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input " name="orderId" id="orderId" lay-verify="required" readonly>
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">客户名</label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="customerName" id="customerName">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">业务类型</label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="bussinessType" id="bussinessType">
+                        <option value="">请选择业务类型</option>
+                        <option value="出口订舱">出口订舱</option>
+                        <option value="陆运">陆运</option>
+                        <option value="报关">报关</option>
+                        <option value="产地证">产地证</option>
+                        <option value="进口">进口</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-row">
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">船名</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="vessel" id="vessel" lay-verify="required" placeholder="请输入船名">
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">航次</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input " name="voyage" id="voyage" lay-verify="required" placeholder="请输入航次">
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">提单号码</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" id="BLNo" name="BLNo" lay-verify="required" placeholder="请输入提单号码">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-row">
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">起运港</label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="loadPort" id="loadPort">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">目的港</label>
+                <div class="layui-input-block">
+                    <select lay-verify="required" name="destPort" id="destPort">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">截单日期</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input " name="jdDate" id="jdDate" lay-verify="required" placeholder="请输入截单日期">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="layui-row">
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">截港日期</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="jgDate" id="jgDate" lay-verify="required" placeholder="请输入截港日期">
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">集装箱量</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="containerCount" id="containerCount" lay-verify="required" placeholder="请输入集装箱量">
+                </div>
+            </div>
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">场站名称</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="stationName" id="stationName" lay-verify="required" placeholder="请输入场站名称">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-row">
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="contact" id="contact" lay-verify="required" placeholder="请输入联系人">
+                </div>
+            </div>
+
+            <div class="magb15 layui-col-md4 layui-col-xs12">
+                <label class="layui-form-label">联系电话</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" name="tel" id="tel" lay-verify="tel" placeholder="请输入联系电话">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row layui-col-xs12">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="editRecevingNotice">保存</button>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" src="orderEdit.js"></script>
+</body>
+
+</html>

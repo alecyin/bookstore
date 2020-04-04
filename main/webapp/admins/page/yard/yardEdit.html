@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>添加客户</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewyard" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form layui-row layui-col-space10">
+	<div class="layui-col-md9 layui-col-xs12">
+		<div class="layui-row layui-col-space10">
+			<div class="layui-col-md9 layui-col-xs7">
+          <div class="layui-form-item magt3">
+              <label class="layui-form-label">场站ID</label>
+              <div class="layui-input-block">
+                <input type="text" class="layui-input" id="yardId" lay-verify="yardId" placeholder="请输入场站ID">
+              </div>
+            </div>
+        <div class="layui-form-item magt3">
+					<label class="layui-form-label">场站名称</label>
+					<div class="layui-input-block">
+						<input type="text" class="layui-input" id="yardName" lay-verify="yardName" placeholder="请输入场站名称">
+					</div>
+        </div>
+        <div class="layui-form-item magt3">
+					<label class="layui-form-label">场站代号</label>
+					<div class="layui-input-block">
+						<input type="text" class="layui-input" id="codeName" lay-verify="codeName" placeholder="请输入场站代号">
+					</div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">是否激活</label>
+          <div class="layui-input-block">
+            <input type="checkbox" checked="" id="yardStatus" name="yardStatus" lay-skin="switch" lay-filter="yardStatus" lay-text="是|否">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label"></label>
+          <div class="layui-input-block">
+              <a class="layui-btn layui-btn-sm" lay-filter="editYard" lay-submit>保存</a>
+          </div>
+        </div>
+			</div>	
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="yardAdd.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookstore.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.bookstore.bean.Order">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="customer_id" jdbcType="BIGINT" property="customerId" />
+    <result column="address_id" jdbcType="BIGINT" property="addressId" />
+    <result column="is_paid" jdbcType="BIT" property="isPaid" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bookstore.bean.Order">
+    <result column="books" jdbcType="LONGVARCHAR" property="books" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, customer_id, address_id, is_paid, order_number
+  </sql>
+  <sql id="Blob_Column_List">
+    books
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bookstore.bean.Order">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into order (customer_id, address_id, is_paid, 
+      order_number, books)
+    values (#{customerId,jdbcType=BIGINT}, #{addressId,jdbcType=BIGINT}, #{isPaid,jdbcType=BIT}, 
+      #{orderNumber,jdbcType=VARCHAR}, #{books,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bookstore.bean.Order">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="addressId != null">
+        address_id,
+      </if>
+      <if test="isPaid != null">
+        is_paid,
+      </if>
+      <if test="orderNumber != null">
+        order_number,
+      </if>
+      <if test="books != null">
+        books,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerId != null">
+        #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="addressId != null">
+        #{addressId,jdbcType=BIGINT},
+      </if>
+      <if test="isPaid != null">
+        #{isPaid,jdbcType=BIT},
+      </if>
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="books != null">
+        #{books,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bookstore.bean.Order">
+    update order
+    <set>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=BIGINT},
+      </if>
+      <if test="addressId != null">
+        address_id = #{addressId,jdbcType=BIGINT},
+      </if>
+      <if test="isPaid != null">
+        is_paid = #{isPaid,jdbcType=BIT},
+      </if>
+      <if test="orderNumber != null">
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="books != null">
+        books = #{books,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bookstore.bean.Order">
+    update order
+    set customer_id = #{customerId,jdbcType=BIGINT},
+      address_id = #{addressId,jdbcType=BIGINT},
+      is_paid = #{isPaid,jdbcType=BIT},
+      order_number = #{orderNumber,jdbcType=VARCHAR},
+      books = #{books,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bookstore.bean.Order">
+    update order
+    set customer_id = #{customerId,jdbcType=BIGINT},
+      address_id = #{addressId,jdbcType=BIGINT},
+      is_paid = #{isPaid,jdbcType=BIT},
+      order_number = #{orderNumber,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,28 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 3,
+  "data": [{
+      "portId": 1,
+      "portName": "青岛港",
+      "country": "中国",
+      "description": "山东数一数二的港口",
+      "portStatus": "checked"
+    },
+    {
+      "portId":2,
+      "portName":"Alexandria,Egypt",
+      "country":"Egypt",
+      "description":"埃及大港",
+      "portStatus":"checked"
+    },
+    {
+      "portId":3,
+      "portName":"维多利亚港",
+      "country":"中国",
+      "description":"国际大港",
+      "portStatus":"checked"
+    }
+  ]
+
+}
