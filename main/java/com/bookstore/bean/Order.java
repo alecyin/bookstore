@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class Order implements Serializable {
     private Long id;
 
+    private String books;
+
     private Long customerId;
 
     private Long addressId;
 
-    private Boolean isPaid;
+    private String status;
 
     private String orderNumber;
-
-    private String books;
 
     private static final long serialVersionUID = 1L;
 
@@ -23,6 +23,14 @@ public class Order implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getBooks() {
+        return books;
+    }
+
+    public void setBooks(String books) {
+        this.books = books;
     }
 
     public Long getCustomerId() {
@@ -41,12 +49,12 @@ public class Order implements Serializable {
         this.addressId = addressId;
     }
 
-    public Boolean getIsPaid() {
-        return isPaid;
+    public String getStatus() {
+        return status;
     }
 
-    public void setIsPaid(Boolean isPaid) {
-        this.isPaid = isPaid;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getOrderNumber() {
@@ -57,14 +65,6 @@ public class Order implements Serializable {
         this.orderNumber = orderNumber;
     }
 
-    public String getBooks() {
-        return books;
-    }
-
-    public void setBooks(String books) {
-        this.books = books;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -72,11 +72,11 @@ public class Order implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", books=").append(books);
         sb.append(", customerId=").append(customerId);
         sb.append(", addressId=").append(addressId);
-        sb.append(", isPaid=").append(isPaid);
+        sb.append(", status=").append(status);
         sb.append(", orderNumber=").append(orderNumber);
-        sb.append(", books=").append(books);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

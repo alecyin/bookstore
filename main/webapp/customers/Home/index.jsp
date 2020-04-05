@@ -51,15 +51,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="index.jsp">首页</a></li>
-                    <li><a href="Order.html">我的订单</a></li>
-                    <li><a href="UserInfo.html">个人中心</a></li>
+                    <li><a href="order.jsp">我的订单</a></li>
+                    <li><a href="userInfo.jsp">个人中心</a></li>
                     <li><a href="FriendLink.html">友情链接</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right hidden-sm">
                     <li><a href="login.jsp">登录</a></li>
                     <li><a href="register.jsp">注册</a></li>
                     <li>
-                        <a href="Cart.html"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
+                        <a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -98,7 +98,7 @@
             <c:forEach var="list2" items="${bList}">
                 <div class="col-sm-4 col-md-2">
                     <div class="thumbnail">
-                        <a href="bookInfo.jsp">
+                        <a href="/info/${list2.id}">
                             <img style="width: 100%; height: 200px; display: block;" alt="100%x200"
                                 src="/admins/images/${list2.thumbnail}.jpg" data-src="holder.js/100%x200"
                                 data-holder-rendered="false">
@@ -106,7 +106,7 @@
                         <div class="caption center">
                             <p><span>${list2.name}</span></p>
                             <p style="font-size: 12px;"><span>价格:</span><span>${list2.price} 元</span></p>
-                            <p><a class="btn btn-primary btn-block  btn-sm" role="button" href="bookInfo.jsp">查看详情</a>
+                            <p><a class="btn btn-primary btn-block  btn-sm" role="button" href="/info/${list2.id}">查看详情</a>
                             </p>
                         </div>
                     </div>

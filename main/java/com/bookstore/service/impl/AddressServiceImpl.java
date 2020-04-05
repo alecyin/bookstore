@@ -14,17 +14,17 @@ public class AddressServiceImpl implements AddressService {
     AddressMapper addressMapper;
     @Override
     public int deleteByPrimaryKey(Long id) {
+        return addressMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int insert(Address address) {
         return 0;
     }
 
     @Override
-    public int insert(Address record) {
-        return 0;
-    }
-
-    @Override
-    public int insertSelective(Address record) {
-        return 0;
+    public int insertSelective(Address address) {
+        return addressMapper.insertSelective(address);
     }
 
     @Override
@@ -38,12 +38,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public int updateByPrimaryKeySelective(Address record) {
-        return 0;
+    public int updateByPrimaryKeySelective(Address address) {
+        return addressMapper.updateByPrimaryKeySelective(address);
     }
 
     @Override
-    public int updateByPrimaryKey(Address record) {
+    public int updateByPrimaryKey(Address address) {
         return 0;
     }
 }

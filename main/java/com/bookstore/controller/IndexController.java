@@ -1,14 +1,17 @@
 package com.bookstore.controller;
 
+import com.bookstore.bean.Address;
 import com.bookstore.bean.Book;
 import com.bookstore.bean.Category;
+import com.bookstore.bean.Customer;
+import com.bookstore.service.AddressService;
 import com.bookstore.service.BookService;
 import com.bookstore.service.CategoryService;
+import com.bookstore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,10 @@ public class IndexController {
     CategoryService categoryService;
     @Autowired
     BookService bookService;
+    @Autowired
+    CustomerService customerService;
+    @Autowired
+    AddressService addressService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView customerIndex() {
@@ -122,4 +129,39 @@ public class IndexController {
     public String cToLogin() {
         return "customers/Home/register";
     }
+
+    @RequestMapping(value = "/c/info", method = RequestMethod.GET)
+    public ModelAndView cToInfo(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
+        Customer customer = customerService
+                .selectByPrimaryKey((Long) request.getSession().getAttribute("userId"));
+        mv.setViewName("customers/Home/userInfo");
+        mv.addObject("addressList", addressService.listAddressByCustomerId(customer.getId()));
+        return mv;
+    }
+
+    @RequestMapping(value = "/c/editPass", method = RequestMethod.POST)
+    @ResponseBody
+    public Map cEditPass(@RequestBody Map map1, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        Customer customer = customerService
+                .selectByPrimaryKey((Long) request.getSession().getAttribute("userId"));
+        if (!customer.getPwd().equals(DigestUtils.md5DigestAsHex(((String)map1.get("oldPass")).getBytes()))) {
+            map.put("code", 0);
+        } else {
+            customer.setPwd(DigestUtils.md5DigestAsHex(
+                    ((String)map1.get("newPass")).getBytes()
+            ));
+            map.put("code", customerService.updateByPrimaryKeySelective(customer));
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/c/cart", method = RequestMethod.GET)
+    public ModelAndView toCart() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("customers/Home/cart");
+        return mv;
+    }
+
 }

@@ -54,8 +54,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public int updateByPrimaryKeySelective(Customer record) {
-        return 0;
+    public int updateByPrimaryKeySelective(Customer customer) {
+        return customerMapper.updateByPrimaryKeySelective(customer);
     }
 
     @Override

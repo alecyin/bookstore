@@ -56,15 +56,15 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">首页</a></li>
-                    <li><a href="Order.html">我的订单</a></li>
-                    <li><a href="UserInfo.html">个人中心</a></li>
+                    <li><a href="order.jsp">我的订单</a></li>
+                    <li><a href="userInfo.jsp">个人中心</a></li>
                     <li><a href="FriendLink.html">友情链接</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right hidden-sm">
                     <li><a href="/c/login">登录</a></li>
                     <li><a href="/c/reg">注册</a></li>
                     <li>
-                        <a href="Cart.html"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
+                        <a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -84,7 +84,8 @@
                     <p>出版日期：
                         <fmt:formatDate value="${book.pubdate}" pattern="yyyy年MM月dd日" />
                     </p>
-                    <p><a class="btn btn-info btn-block" role="button" href="#">加入购物车</a></p>
+                    <p><a class="btn btn-info btn-block" role="button" onclick="addCart('${book.id}' + '-' +
+                        '${book.name}'  + '-' + '${book.price}'  + '-' + '${book.thumbnail}')" href="#">加入购物车</a></p>
             </div>
         </div>
         <div class="col-sm-8">
@@ -229,4 +230,17 @@
             }
         });
     });
+    function addCart(str) {
+        var storage = window.localStorage;
+        for (var j = 0, len = storage.length; j < len; j++) {
+            var key = storage.key(j);
+            var value = storage.getItem(key);
+            if (value == str) {
+                alert("已经加过购物车了");
+                return;
+            }
+        }
+        window.localStorage.setItem(storage.length, str);
+        alert("添加成功");
+    }
 </script>
