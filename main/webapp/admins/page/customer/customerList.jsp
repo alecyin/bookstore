@@ -27,9 +27,7 @@
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-normal add_btn">添加顾客</a>
 			</div>
-			<div class="layui-inline">
-					<button type="button" class="layui-btn" id="upload_btn">批量上传</button>
-			</div>
+
 			<div class="layui-inline">
 				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
 			</div>

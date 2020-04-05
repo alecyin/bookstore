@@ -32,12 +32,12 @@
 		},{
 			"title": "订单管理",
 			"icon": "icon-text",
-			"href": "/order/list",
+			"href": "/orders/list",
 			"spread": false
 		},{
 			"title": "留言管理",
 			"icon": "icon-text",
-			"href": "/msg/list",
+			"href": "/msgs/list",
 			"spread": false
 		}
 	]

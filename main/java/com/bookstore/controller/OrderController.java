@@ -1,12 +1,15 @@
 package com.bookstore.controller;
 
-import com.bookstore.bean.Msg;
-import com.bookstore.bean.Order;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bookstore.bean.*;
 import com.bookstore.service.*;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +17,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -65,5 +69,107 @@ public class OrderController {
         order.setStatus("已完结");
         res.put("code", orderService.updateByPrimaryKeySelective(order));
         return res;
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public void edit(@RequestBody Order order) {
+        orderService.updateByPrimaryKeySelective(order);
+    }
+
+
+
+    @RequestMapping(value = "/orderEdit/{id}", method = RequestMethod.GET)
+    public ModelAndView categoryEdit(@PathVariable("id") Long id) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("admins/page/order/orderEdit");
+        mv.addObject("oldStatus", orderService.selectByPrimaryKey(id).getStatus());
+        return mv;
+    }
+
+    @RequestMapping(value = "/del", method = RequestMethod.GET)
+    @ResponseBody
+    public void del(@RequestParam("ids") String ids) {
+        String[] strs = ids.split("-");
+        for (String str:strs) {
+            if (!StringUtils.isEmpty(str))
+                orderService.deleteByPrimaryKey(Long.valueOf(str));
+        }
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list() {
+        return "admins/page/order/orderList";
+    }
+
+    @RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
+    public ModelAndView detail(@PathVariable("id") Long id) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("admins/page/order/orderDetail");
+        mv.addObject("id", id);
+        return mv;
+    }
+
+    @RequestMapping(value = "/getDetail/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getDetail(@PathVariable("id") Long id) {
+        JSONObject jsonObject = new JSONObject();
+        Order order = orderService.selectByPrimaryKey(id);
+        JSONArray jsonArray = new JSONArray();
+        String[] bookStrs = order.getBooks().split("\\|");
+        int amountAll = 0;
+        for (String str : bookStrs) {
+            Long bookId = Long.valueOf(str.split("-")[0]);
+            Book book = bookService.selectByPrimaryKey(bookId);
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("name", book.getName());
+            jsonObject1.put("author", book.getAuthor());
+            jsonObject1.put("price", book.getPrice());
+            jsonObject1.put("isbn", book.getIsbn());
+            jsonObject1.put("pubdate", book.getPubdate());
+            jsonObject1.put("categoryName", categoryService.selectByPrimaryKey(book.getCategoryId()).getName());
+            jsonObject1.put("amount", Long.valueOf(str.split("-")[1]));
+            amountAll += Integer.valueOf(str.split("-")[1]);
+            jsonObject1.put("thumbnail", book.getThumbnail());
+            jsonObject1.put("smallCnt", book.getPrice().multiply(new BigDecimal(str.split("-")[1])));
+            jsonArray.add(jsonObject1);
+        }
+        jsonObject.put("code", 0);
+        jsonObject.put("data", jsonArray);
+        jsonObject.put("count", jsonArray.size());
+        return jsonObject.toJSONString();
+    }
+
+    @RequestMapping(value = "/table-data", method = RequestMethod.GET)
+    @ResponseBody
+    public String listData(
+            @RequestParam(value = "key", required = false) String keyword,
+            @RequestParam("page") int page,
+            @RequestParam("limit") int limit) {
+        //订单号，订单状态，顾客名称，收货地址，总价格，Id
+        JSONObject jsonObject = new JSONObject();
+        Map<String, Object> map = new HashMap<>();
+        map.put("keyword", keyword);
+        map.put("currentIndex", (page - 1) * limit);
+        map.put("pageSize", limit);
+        List<Order> oList = orderService.listOrdersByPage(map);
+        jsonObject.put("code", 0);
+        JSONArray jsonArray = new JSONArray();
+        for (Order order : oList) {
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("id", order.getId());
+            jsonObject1.put("total", order.getTotal());
+            jsonObject1.put("status", order.getStatus());
+            jsonObject1.put("orderNumber", order.getOrderNumber());
+            Customer customer = customerService.selectByPrimaryKey(order.getCustomerId());
+            jsonObject1.put("customerName", customer.getName());
+            Address address = addressService.selectByPrimaryKey(order.getAddressId());
+            jsonObject1.put("address",  "联系人：" + address.getContacts() + "-手机号：" + address.getPhone()
+                    + "-详细地址：" + address.getDetail());
+            jsonArray.add(jsonObject1);
+        }
+        jsonObject.put("data", jsonArray);
+        jsonObject.put("count", orderService.listOrders().size());
+        return jsonObject.toJSONString();
     }
 }

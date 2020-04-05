@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -40,6 +41,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> listOrdersByCustomerId(Long customerId) {
         return orderMapper.listOrdersByCustomerId(customerId);
+    }
+
+    @Override
+    public List<Order> listOrdersByPage(Map<String, Object> map) {
+        return orderMapper.listOrdersByPage(map);
+    }
+
+    @Override
+    public List<Order> listOrders() {
+        return orderMapper.listOrders();
     }
 
     @Override

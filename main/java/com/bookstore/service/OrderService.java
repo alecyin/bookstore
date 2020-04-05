@@ -1,5 +1,6 @@
 package com.bookstore.service;
 
+import com.bookstore.bean.Book;
 import com.bookstore.bean.Customer;
 import com.bookstore.bean.Order;
 
@@ -18,6 +19,10 @@ public interface OrderService {
     int updateByPrimaryKeySelective(Order record);
 
     List<Order> listOrdersByCustomerId(Long customerId);
+
+    List<Order> listOrdersByPage(Map<String, Object> map);
+
+    List<Order> listOrders();
 
     int updateByPrimaryKey(Order record);
 }
