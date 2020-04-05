@@ -7,21 +7,36 @@
     <result column="customer_id" jdbcType="BIGINT" property="customerId" />
     <result column="reply_msg_id" jdbcType="BIGINT" property="replyMsgId" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bookstore.bean.Msg">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, book_id, customer_id, reply_msg_id, is_deleted
+    id, book_id, customer_id, reply_msg_id, is_deleted, content
   </sql>
-  <sql id="Blob_Column_List">
-    content
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="listMsgs" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from msg
+  </select>
+  <select id="listMsgsByBookId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from msg
+    where
+    `book_id` = #{bookId,jdbcType=BIGINT}
+  </select>
+  <select id="listMsgsByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from msg
+    <where>
+      <if test="keyword != null and keyword != ''">
+      </if>
+    </where>
+    limit #{currentIndex}, #{pageSize}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from msg
     where id = #{id,jdbcType=BIGINT}
   </select>

@@ -28,13 +28,17 @@ public class LoginController {
 
     @RequestMapping(value = "/customers", method = RequestMethod.POST)
     @ResponseBody
-    public Map customersLogin(@RequestBody Customer customer) {
+    public Map customersLogin(@RequestBody Customer customer,
+                              HttpServletRequest request) {
         Customer customer1;
         Map<String, Object> map = new HashMap<>();
         if ((customer1 = customerService.selectByName(customer.getName())) != null &&
                 customer1.getPwd().equals(DigestUtils.md5DigestAsHex(customer.getPwd().getBytes()))) {
             map.put("code", 1);
             map.put("data", customer1);
+            HttpSession session = request.getSession();
+            session.setAttribute("role","customer");
+            session.setAttribute("userId", customer1.getId());
         } else {
             map.put("code", 0);
         }

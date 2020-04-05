@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer selectByPrimaryKey(Long id) {
-        return null;
+        return customerMapper.selectByPrimaryKey(id);
     }
 
     @Override

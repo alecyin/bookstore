@@ -8,11 +8,11 @@
 <head lang="en">
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="../bootstrap-3.3.4/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../Flat-UI-master/dist/css/flat-ui.min.css"/>
-    <script src="../Flat-UI-master/dist/js/vendor/jquery.min.js"></script>
-    <script src="../bootstrap-3.3.4/dist/js/bootstrap.min.js"></script>
-    <script src="../Flat-UI-master/dist/js/flat-ui.min.js"></script>
+    <link rel="stylesheet" href="/customers/bootstrap-3.3.4/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/customers/Flat-UI-master/dist/css/flat-ui.min.css"/>
+    <script src="/customers/Flat-UI-master/dist/js/vendor/jquery.min.js"></script>
+    <script src="/customers/bootstrap-3.3.4/dist/js/bootstrap.min.js"></script>
+    <script src="/customers/Flat-UI-master/dist/js/flat-ui.min.js"></script>
     <title></title>
     <style>
         .row{
@@ -40,7 +40,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right hidden-sm">
                 <li><a href="login.jsp">登录</a></li>
-                <li><a href="register.jsp">注册</a></li>
+                <li><a href="/c/reg">注册</a></li>
                 <li>
                     <a href="Cart.html"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
             </ul>
@@ -51,45 +51,28 @@
 <div class="container">
     <div class="row thumbnail center">
         <div class="col-sm-12">
-            <h1 class="text-center" style="margin-bottom: 30px">用户登录</h1>
-        </div>
-        <div class="col-sm-6">
+            <h1 class="text-center" style=" font-size: 25px; margin-bottom: 30px">用户登录</h1>
+        </div> 
+        <div class="col-sm-6 col-sm-offset-3">
             <form class="form-horizontal caption">
                 <div class="form-group">
                     <label for="username" class="col-sm-3 control-label">用户名</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="username" placeholder="用户名">
+                        <input type="text" required class="form-control" id="name" placeholder="用户名">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">密码</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="password" placeholder="密码">
+                        <input type="password" required class="form-control" id="pwd" placeholder="密码">
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-9">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox">记住我
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-3 col-sm-5">
-                        <button type="submit" class="btn btn-success btn-block">登录</button>
+                    <div class="col-sm-offset-4 col-sm-5">
+                        <button type="button" onclick="login()" class="btn btn-success btn-block">登录</button>
                     </div>
                 </div>
             </form>
-        </div>
-        <div class="col-sm-6">
-            <div class="caption">
-                <h3>免责声明</h3>
-                <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-
-            </div>
-
         </div>
 
     </div>
@@ -102,3 +85,30 @@
 </div>
 </body>
 </html>
+<script>
+    function login() {
+        $.ajax({
+            url: "/login/customers",
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify({
+                name : $("#name").val(),  //类别名称
+                pwd : $("#pwd").val()
+            }),
+            cache: false,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: function (res) {
+                if (res.code == 0) {
+                    alert("用户名或密码错误");
+                } else {
+                    alert("登录成功");
+                    window.location.href = "/";
+                }
+            },
+            error: function (e) {
+            }
+        });
+    }
+</script>

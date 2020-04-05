@@ -1,13 +1,18 @@
+<%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="../bootstrap-3.3.4/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../Flat-UI-master/dist/css/flat-ui.min.css"/>
-    <script src="../Flat-UI-master/dist/js/vendor/jquery.min.js"></script>
-    <script src="../bootstrap-3.3.4/dist/js/bootstrap.min.js"></script>
-    <script src="../Flat-UI-master/dist/js/flat-ui.min.js"></script>
+    <link rel="stylesheet" href="/customers/bootstrap-3.3.4/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/customers/Flat-UI-master/dist/css/flat-ui.min.css"/>
+    <script src="/customers/Flat-UI-master/dist/js/vendor/jquery.min.js"></script>
+    <script src="/customers/bootstrap-3.3.4/dist/js/bootstrap.min.js"></script>
+    <script src="/customers/Flat-UI-master/dist/js/flat-ui.min.js"></script>
     <title></title>
     <style>
         .row{
@@ -46,69 +51,39 @@
 <div class="container">
     <div class="row thumbnail">
         <div class="col-sm-12">
-             <h1 class="text-center" style="margin-bottom: 30px">用户注册</h1>
+             <h1 class="text-center" style=" font-size: 25px; margin-bottom: 30px">用户注册</h1>
         </div>
         <div class="col-sm-6">
             <form class="form-horizontal caption">
                 <div class="form-group">
                     <label for="username" class="col-sm-3 control-label">用户名</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="username" placeholder="用户名">
+                        <input type="text" required class="form-control" id="name" placeholder="用户名">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">密码</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="password" placeholder="密码">
+                        <input type="password" required class="form-control" id="pwd" placeholder="密码">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">确认密码</label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="password2" placeholder="确认密码">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inlineRadio1" class="col-sm-3 control-label">性别</label>
-                    <div class="col-sm-8">
-                        <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">男
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1">女
-                        </label>
-                    </div>
-
-                </div>
-                <div class="form-group">
-                    <label for="telephone" class="col-sm-3 control-label">电话</label>
-                    <div class="col-sm-8">
-                        <input type="tel" class="form-control" id="telephone" placeholder="电话号码">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="address" class="col-sm-3 control-label">地址</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="address" placeholder="地址">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="email" class="col-sm-3 control-label">邮箱</label>
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="email" placeholder="邮箱">
+                        <input type="password" required class="form-control" id="pwd2" placeholder="确认密码">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-5">
-                        <button type="submit" class="btn btn-success btn-block">注册</button>
+                        <button type="button" onclick="reg()" class="btn btn-success btn-block">注册</button>
                     </div>
                 </div>
             </form>
         </div>
         <div class="col-sm-6">
             <div class="caption">
-                <h3>免责声明</h3>
-                <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                <h3>注意事项</h3>
+                <p>请务必保存好登录信息</p>
 
             </div>
 
@@ -124,3 +99,29 @@
 </div>
 </body>
 </html>
+<script>
+    function reg() {
+        if ($("#pwd").val() != $("#pwd2").val()) {
+            alert("两次密码输入不同");
+            return;
+        }
+        $.ajax({
+            url: "/customers/reg",
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify({
+                name : $("#name").val(),  //类别名称
+                pwd : $("#pwd").val()
+            }),
+            cache: false,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: function (res) {
+                alert("注册成功");
+            },
+            error: function (e) {
+            }
+        });
+    }
+</script>
