@@ -34,6 +34,13 @@
       #{status,jdbcType=VARCHAR}, #{orderNumber,jdbcType=VARCHAR}, #{total,jdbcType=DECIMAL}
       )
   </insert>
+  <select id="listOrdersByCustomerId" parameterType="java.lang.Long"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `order`
+    where
+    customer_id = #{customerId,jdbcType=BIGINT};
+  </select>
   <insert id="insertSelective" parameterType="com.bookstore.bean.Order">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()

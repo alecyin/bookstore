@@ -1,13 +1,9 @@
 package com.bookstore.controller;
 
-import com.bookstore.bean.Address;
-import com.bookstore.bean.Book;
-import com.bookstore.bean.Category;
-import com.bookstore.bean.Customer;
-import com.bookstore.service.AddressService;
-import com.bookstore.service.BookService;
-import com.bookstore.service.CategoryService;
-import com.bookstore.service.CustomerService;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bookstore.bean.*;
+import com.bookstore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
@@ -15,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +32,8 @@ public class IndexController {
     CustomerService customerService;
     @Autowired
     AddressService addressService;
+    @Autowired
+    OrderService orderService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView customerIndex() {
@@ -170,17 +169,43 @@ public class IndexController {
     public ModelAndView toOrder(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("customers/Home/order");
-        mv.addObject("addressList",
-                addressService.listAddressByCustomerId((Long) request.getSession().getAttribute("userId")));
+        mv.addObject("orderList",
+                orderService.listOrdersByCustomerId((Long) request.getSession().getAttribute("userId")));
         return mv;
     }
 
-    @RequestMapping(value = "/c/orderInfo", method = RequestMethod.GET)
-    public ModelAndView toOrderInfo(HttpServletRequest request) {
+    @RequestMapping(value = "/c/orderInfo/{orderId}", method = RequestMethod.GET)
+    public ModelAndView toOrderInfo(@PathVariable("orderId") Long orderId,
+                                    HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("customers/Home/orderInfo");
-        mv.addObject("addressList",
-                addressService.listAddressByCustomerId((Long) request.getSession().getAttribute("userId")));
+        Order order = orderService.selectByPrimaryKey(orderId);
+        JSONObject res = new JSONObject();
+        res.put("orderNumber", order.getOrderNumber());
+        res.put("status", order.getStatus());
+        res.put("id", order.getId());
+        res.put("total", order.getTotal());
+        Address address = addressService.selectByPrimaryKey(order.getAddressId());
+        res.put("contacts", address.getContacts());
+        res.put("phone", address.getPhone());
+        res.put("detail", address.getDetail());
+        JSONArray jsonArray = new JSONArray();
+        String[] bookStrs = order.getBooks().split("\\|");
+        int amountAll = 0;
+        for (String str : bookStrs) {
+            Long bookId = Long.valueOf(str.split("-")[0]);
+            Book book = bookService.selectByPrimaryKey(bookId);
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("bookName", book.getName());
+            jsonObject1.put("price", book.getPrice());
+            jsonObject1.put("amount", Long.valueOf(str.split("-")[1]));
+            amountAll += Integer.valueOf(str.split("-")[1]);
+            jsonObject1.put("smallCnt", book.getPrice().multiply(new BigDecimal(str.split("-")[1])));
+            jsonArray.add(jsonObject1);
+        }
+        res.put("amountAll", amountAll);
+        res.put("book", jsonArray);
+        mv.addObject("orderDetail",res);
         return mv;
     }
 

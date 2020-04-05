@@ -6,6 +6,8 @@ import com.bookstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
@@ -27,12 +29,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order selectByPrimaryKey(Long id) {
-        return null;
+        return orderMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public int updateByPrimaryKeySelective(Order order) {
-        return 0;
+        return orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public List<Order> listOrdersByCustomerId(Long customerId) {
+        return orderMapper.listOrdersByCustomerId(customerId);
     }
 
     @Override

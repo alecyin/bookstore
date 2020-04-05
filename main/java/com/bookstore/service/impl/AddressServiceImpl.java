@@ -29,7 +29,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address selectByPrimaryKey(Long id) {
-        return null;
+        return addressMapper.selectByPrimaryKey(id);
     }
 
     @Override

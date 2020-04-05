@@ -46,20 +46,20 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">这什么东西</span>
                 </button>
-                <a class="navbar-brand" href="index.jsp">图书商城</a>
+                <a class="navbar-brand" href="/">图书商城</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="index.jsp">首页</a></li>
-                    <li><a href="order.jsp">我的订单</a></li>
-                    <li><a href="userInfo.jsp">个人中心</a></li>
+                    <li><a href="/c/order">我的订单</a></li>
+                    <li><a href="/c/info">个人中心</a></li>
                     <li><a href="FriendLink.html">友情链接</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right hidden-sm">
-                    <li><a href="login.jsp">登录</a></li>
-                    <li><a href="register.jsp">注册</a></li>
+                    <li><a href="/c/login">登录</a></li>
+                    <li><a href="/c/reg">注册</a></li>
                     <li>
-                        <a href="cart.jsp"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
+                        <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
