@@ -123,7 +123,6 @@
             <ul class="nav nav-tabs nav-justified" id="myTabs">
                 <li class="active"><a href="#userHome">收货地址</a></li>
                 <li><a href="#editPassword">密码修改</a></li>
-                <li><a href="#orderManager">订单管理</a></li>
             </ul>
 
             <!-- Tab panes -->
