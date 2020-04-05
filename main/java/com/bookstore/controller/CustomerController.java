@@ -8,6 +8,7 @@ import com.bookstore.service.AddressService;
 import com.bookstore.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,6 +48,14 @@ public class CustomerController {
         }
     }
 
+    @RequestMapping(value = "/resetPass", method = RequestMethod.GET)
+    @ResponseBody
+    public void resetPass(@RequestParam("id") Long id) {
+        Customer customer = customerService.selectByPrimaryKey(id);
+        customer.setPwd(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        customerService.updateByPrimaryKeySelective(customer);
+    }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView list() {
         ModelAndView mv = new ModelAndView();
@@ -73,7 +82,7 @@ public class CustomerController {
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("name", customer.getName());
             jsonObject1.put("id", customer.getId());
-            int i = 0;
+            int i = 1;
             for (Address address:addressService.listAddressByCustomerId(customer.getId())) {
                 jsonObject1.put("address"+(i++), "联系人：" + address.getContacts() + "-手机号：" + address.getPhone()
                     + "-详细地址：" + address.getDetail());

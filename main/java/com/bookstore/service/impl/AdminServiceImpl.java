@@ -1,11 +1,15 @@
 package com.bookstore.service.impl;
 
 import com.bookstore.bean.Admin;
+import com.bookstore.bean.Category;
 import com.bookstore.mapper.AdminMapper;
 import com.bookstore.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -15,7 +19,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public int deleteByPrimaryKey(Long id) {
-        return 0;
+        return adminMapper.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -32,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin selectByPrimaryKey(Long id) {
-        return null;
+        return adminMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -41,12 +45,23 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int updateByPrimaryKeySelective(Admin record) {
-        return 0;
+    public List<Admin> listAdmins() {
+        return adminMapper.listAdmins();
     }
 
     @Override
-    public int updateByPrimaryKey(Admin record) {
+    public List<Admin> listAdminsByPage(Map<String, Object> map) {
+        return adminMapper.listAdminsByPage(map);
+    }
+
+
+    @Override
+    public int updateByPrimaryKeySelective(Admin admin) {
+        return adminMapper.updateByPrimaryKeySelective(admin);
+    }
+
+    @Override
+    public int updateByPrimaryKey(Admin admin) {
         return 0;
     }
 }

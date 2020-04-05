@@ -199,6 +199,15 @@
 					layer.close(index);
 					})
 				});
+			} else if (layEvent === 'resetPass') {
+				layer.confirm('确定重置此顾客密码？', { icon: 3, title: '提示信息' }, function (index) {
+					$.get("/customers/resetPass",{
+						id : data.id
+					},function(data){
+						tableIns.reload();
+						layer.close(index);
+					})
+				});
 			}
 		});
 

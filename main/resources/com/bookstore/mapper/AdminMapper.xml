@@ -15,6 +15,22 @@
     from `admin`
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="listAdmins" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `admin`
+  </select>
+  <select id="listAdminsByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `admin`
+    <where>
+      <if test="keyword != null and keyword != ''">
+        `name` like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+    limit #{currentIndex}, #{pageSize}
+  </select>
   <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
