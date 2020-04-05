@@ -13,7 +13,5 @@ public interface OrderService {
 
     int updateByPrimaryKeySelective(Order record);
 
-    int updateByPrimaryKeyWithBLOBs(Order record);
-
     int updateByPrimaryKey(Order record);
 }

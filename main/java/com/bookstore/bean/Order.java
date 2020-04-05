@@ -1,6 +1,7 @@
 package com.bookstore.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Order implements Serializable {
     private Long id;
@@ -14,6 +15,8 @@ public class Order implements Serializable {
     private String status;
 
     private String orderNumber;
+
+    private BigDecimal total;
 
     private static final long serialVersionUID = 1L;
 
@@ -65,6 +68,14 @@ public class Order implements Serializable {
         this.orderNumber = orderNumber;
     }
 
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -77,6 +88,7 @@ public class Order implements Serializable {
         sb.append(", addressId=").append(addressId);
         sb.append(", status=").append(status);
         sb.append(", orderNumber=").append(orderNumber);
+        sb.append(", total=").append(total);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

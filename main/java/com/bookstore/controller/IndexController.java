@@ -158,9 +158,29 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/c/cart", method = RequestMethod.GET)
-    public ModelAndView toCart() {
+    public ModelAndView toCart(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("customers/Home/cart");
+        mv.addObject("addressList",
+                addressService.listAddressByCustomerId((Long) request.getSession().getAttribute("userId")));
+        return mv;
+    }
+
+    @RequestMapping(value = "/c/order", method = RequestMethod.GET)
+    public ModelAndView toOrder(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("customers/Home/order");
+        mv.addObject("addressList",
+                addressService.listAddressByCustomerId((Long) request.getSession().getAttribute("userId")));
+        return mv;
+    }
+
+    @RequestMapping(value = "/c/orderInfo", method = RequestMethod.GET)
+    public ModelAndView toOrderInfo(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("customers/Home/orderInfo");
+        mv.addObject("addressList",
+                addressService.listAddressByCustomerId((Long) request.getSession().getAttribute("userId")));
         return mv;
     }
 

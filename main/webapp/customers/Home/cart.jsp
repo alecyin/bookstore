@@ -86,11 +86,49 @@
                 </div>
             </div>
             <div class="col-sm-offset-7 col-sm-5" style="padding: 30px;">
-                <div class="col-sm-6  btn btn-success btn-block" onclick="subOrder()" >提交订单</div>
+                <div class="col-sm-6  btn btn-success btn-block" onclick="subOrder()">提交订单</div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="createFileMModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <input type="text" id="msgId" style="display: none;" />
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createFileTitle">创建文件</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="text" style="display: none;" id="addressId" />
 
+                        <select id="addressSelect" name="addressSelect" multiple class="form-control">
+
+                            <c:if test="${not empty addressList}">
+                                <c:forEach var="list1" begin="0" items="${addressList}" varStatus="status">
+                                    <option value="${list1.id}">
+                                        <address>
+                                            收货地址${status.index + 1} :
+                                            <strong>${list1.contacts}</strong><br>
+                                            <abbr title="Phone"></abbr> ${list1.phone}<br>
+                                            ${list1.detail}<br><br><br>
+                                            <hr />
+                                        </address>
+                                    </option>
+                                </c:forEach>
+                            </c:if>
+                        </select>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="createFileSureBut">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--footer-->
     <div class="navbar navbar-default navbar-static-bottom">
@@ -138,7 +176,8 @@
         amountCnt(sId);
     }
     function amountCnt(bookId) {
-        $("#cntOne" + bookId).text(plusFloat($("#amount" + bookId).val(), $("#price" + bookId).text()));
+        if (bookId != -1)
+            $("#cntOne" + bookId).text(plusFloat($("#amount" + bookId).val(), $("#price" + bookId).text()));
         var a = 0;
         $("input[name='amount']").each(function (j, item) {
             a += parseInt(item.value);
@@ -152,6 +191,7 @@
     }
     function delS(sId) {
         $("#s" + sId).remove();
+        amountCnt(-1)
     }
     function numAdd(num1, num2) {
         var baseNum, baseNum1, baseNum2;
@@ -180,16 +220,57 @@
         return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
     }
     function subOrder() {
+        ShowCreateModal("选择收货地址");
+    }
+
+    function ShowCreateModal(title) {
+        $("#createFileTitle").text(title);
+        $('#createFileMModal').modal('show');
+    }
+    $("#createFileSureBut").click(function () {
         var res = "";
         for (var i = 0, len = storage.length; i < len; i++) {
-        var key = storage.key(i);
-        var value = storage.getItem(key);
-        let bookId = value.split("-")[0];
-        var amount = $("#amount" + bookId).val();
-        if (amount != 0) {
-            res += "," + bookId + "-" + amount;
-        } 
-            console.log(res);
+            var key = storage.key(i);
+            var value = storage.getItem(key);
+            let bookId = value.split("-")[0];
+            var amount = $("#amount" + bookId).val();
+            if (amount != 0 && amount != undefined) {
+                res += "|" + bookId + "-" + amount;
+            }
         }
-    }
+        if (res == null || res == "") {
+            alert("请选择书籍");
+            return;
+        }
+        if ($("#addressSelect option:selected").val() == null || $("#addressSelect option:selected").val() == undefined) {
+            alert("请选择地址");
+            return;
+        }
+        $("#createFileMModal").modal("hide");
+        $.ajax({
+            url: "/orders/add",
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify({
+                books: res,
+                addressId: $("#addressSelect option:selected").val()
+            }),
+            cache: false,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: function (res) {
+                if (res.code == 0) {
+                    alert("提交失败");
+                    return;
+                }
+                alert("提交成功");
+                localStorage.clear();
+                location.reload();
+            },
+            error: function (e) {
+                alert("稍后重试");
+            }
+        });
+    });
 </script>
