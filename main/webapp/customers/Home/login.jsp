@@ -1,3 +1,8 @@
+<%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -35,7 +40,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right hidden-sm">
                 <li><a href="login.jsp">登录</a></li>
-                <li><a href="Register.html">注册</a></li>
+                <li><a href="register.jsp">注册</a></li>
                 <li>
                     <a href="Cart.html"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
             </ul>

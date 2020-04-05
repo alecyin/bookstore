@@ -112,4 +112,14 @@ public class IndexController {
     public String adminToLogin() {
         return "admins/page/login/login";
     }
+
+    @RequestMapping(value = "/c/login", method = RequestMethod.GET)
+    public String cIndex() {
+        return "customers/Home/login";
+    }
+
+    @RequestMapping(value = "/c/reg", method = RequestMethod.GET)
+    public String cToLogin() {
+        return "customers/Home/register";
+    }
 }
