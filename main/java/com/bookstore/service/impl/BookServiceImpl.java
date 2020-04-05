@@ -39,8 +39,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> listBooksByCategory(Long categoryId) {
+        return bookMapper.listBooksByCategory(categoryId);
+    }
+
+    @Override
     public List<Book> listBooks() {
-        return null;
+        return bookMapper.listBooks();
     }
 
     @Override

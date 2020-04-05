@@ -23,6 +23,7 @@ public class CustomerController {
     CustomerService customerService;
     @Autowired
     AddressService addressService;
+
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
     @ResponseBody
     public Map reg(@RequestBody Customer customer) {
@@ -66,7 +67,7 @@ public class CustomerController {
         JSONArray jsonArray = new JSONArray();
         Map<String, Object> map = new HashMap<>();
         map.put("keyword", keyword);
-        map.put("currentIndex", (page - 1) * page);
+        map.put("currentIndex", (page - 1) * limit);
         map.put("pageSize", limit);
         for (Customer customer: customerService.listCustomersByPage(map)) {
             JSONObject jsonObject1 = new JSONObject();
@@ -81,7 +82,7 @@ public class CustomerController {
         }
         jsonObject.put("code", 0);
         jsonObject.put("data", jsonArray);
-        jsonObject.put("count", jsonArray.size());
+        jsonObject.put("count", customerService.listCustomers().size());
         return jsonObject.toJSONString();
     }
 

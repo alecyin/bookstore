@@ -20,6 +20,13 @@
     <include refid="Base_Column_List" />
     from book
   </select>
+  <select id="listBooksByCategory" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where
+    `category_id` = #{categoryId,jdbcType=BIGINT}
+  </select>
   <select id="listBooksByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

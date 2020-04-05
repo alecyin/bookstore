@@ -3,6 +3,7 @@ package com.bookstore.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bookstore.bean.Book;
+import com.bookstore.bean.Category;
 import com.bookstore.service.BookService;
 import com.bookstore.service.CategoryService;
 import com.bookstore.util.ReadFromPost;
@@ -129,7 +130,7 @@ public class BookController {
         JSONObject jsonObject = new JSONObject();
         Map<String, Object> map = new HashMap<>();
         map.put("keyword", keyword);
-        map.put("currentIndex", (page - 1) * page);
+        map.put("currentIndex", (page - 1) * limit);
         map.put("pageSize", limit);
         JSONArray jsonArray = new JSONArray();
         for (Book book : bookService.listBooksByPage(map)) {
@@ -149,7 +150,8 @@ public class BookController {
         }
         jsonObject.put("code", 0);
         jsonObject.put("data", jsonArray);
-        jsonObject.put("count", jsonArray.size());
+        jsonObject.put("count", bookService.listBooks().size());
         return jsonObject.toJSONString();
     }
+
 }

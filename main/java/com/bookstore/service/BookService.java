@@ -17,6 +17,8 @@ public interface BookService {
 
     List<Book> listBooksByPage(Map<String, Object> map);
 
+    List<Book> listBooksByCategory(Long categoryId);
+
     List<Book> listBooks();
 
     int updateByPrimaryKeySelective(Book book);

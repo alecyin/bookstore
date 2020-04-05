@@ -74,12 +74,12 @@ public class CategoryController {
         JSONObject jsonObject = new JSONObject();
         Map<String, Object> map = new HashMap<>();
         map.put("keyword", keyword);
-        map.put("currentIndex", (page - 1) * page);
+        map.put("currentIndex", (page - 1) * limit);
         map.put("pageSize", limit);
         List caList = categoryService.listCategoriesByPage(map);
         jsonObject.put("code", 0);
         jsonObject.put("data", caList);
-        jsonObject.put("count", caList.size());
+        jsonObject.put("count", categoryService.listCategories().size());
         return jsonObject.toJSONString();
     }
 }
