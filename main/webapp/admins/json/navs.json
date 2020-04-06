@@ -37,7 +37,7 @@
 		},{
 			"title": "留言管理",
 			"icon": "icon-text",
-			"href": "/msgs/list",
+			"href": "/messages/list",
 			"spread": false
 		}
 	]

@@ -16,6 +16,9 @@
     select
     <include refid="Base_Column_List" />
     from msg
+    <where>
+      is_deleted = 0
+    </where>
   </select>
   <select id="listMsgsByBookId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
@@ -30,6 +33,10 @@
     from msg
     <where>
       <if test="keyword != null and keyword != ''">
+        `content` like concat('%',#{keyword,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="1 == 1">
+        and is_deleted = 0
       </if>
     </where>
     limit #{currentIndex}, #{pageSize}

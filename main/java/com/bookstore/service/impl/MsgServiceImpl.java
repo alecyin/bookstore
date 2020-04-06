@@ -15,7 +15,9 @@ public class MsgServiceImpl implements MsgService {
     MsgMapper msgMapper;
     @Override
     public int deleteByPrimaryKey(Long id) {
-        return 0;
+        Msg msg = selectByPrimaryKey(id);
+        msg.setIsDeleted(true);
+        return msgMapper.updateByPrimaryKeySelective(msg);
     }
 
     @Override
