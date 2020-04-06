@@ -12,10 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /**
  * @author yhf
@@ -85,6 +83,18 @@ public class IndexController {
         mv.addObject("bList", bList);
         mv.addObject("caList", caList);
         mv.addObject("actived", categoryId);
+        return mv;
+    }
+
+    @RequestMapping(value = "/more", method = RequestMethod.GET)
+    public ModelAndView customerMore() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("customers/Home/more");
+        List<Category> caList = categoryService.listCategories();
+        List<Book> bList = bookService.listBooksByCategory(caList.get(0).getId());
+        mv.addObject("bList", bList);
+        mv.addObject("caList", caList);
+        mv.addObject("actived", caList.get(0).getId());
         return mv;
     }
 
@@ -206,6 +216,39 @@ public class IndexController {
         res.put("amountAll", amountAll);
         res.put("book", jsonArray);
         mv.addObject("orderDetail",res);
+        return mv;
+    }
+
+    @RequestMapping(value = "/c/recommend", method = RequestMethod.GET)
+    public ModelAndView recommend(HttpServletRequest request) {
+        List<Order> orderList = orderService.
+                listOrdersByCustomerId((Long) request.getSession().getAttribute("userId"));
+        List<Integer> categoryList = new ArrayList<>();
+        Map<Long, Integer> map = new HashMap<>();
+        for (Order order : orderList) {
+            String[] books = order.getBooks().split("\\|");
+            for (String str : books) {
+                Long categoryId = bookService.
+                        selectByPrimaryKey(Long.valueOf(str.split("-")[0])).getCategoryId();
+                int amount = Integer.valueOf(str.split("-")[1]);
+                map.put(categoryId, map.getOrDefault(categoryId, 0) + amount);
+            }
+        }
+        List<Map.Entry<Long, Integer>> list = new ArrayList<Map.Entry<Long, Integer>>(map.entrySet());
+        Collections.sort(list, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+        JSONArray jsonArray = new JSONArray();
+        for (Map.Entry<Long, Integer> e: list) {
+            Long categoryId = e.getKey();
+            JSONObject jsonObject1 = new JSONObject();
+            for (Book book: bookService.listBooksByCategory(categoryId)) {
+                jsonObject1.put("book", book);
+                jsonObject1.put("categoryName", categoryService.selectByPrimaryKey(book.getCategoryId()).getName());
+                jsonArray.add(jsonObject1);
+            }
+        }
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("customers/Home/recommend");
+        mv.addObject("recommendList", jsonArray);
         return mv;
     }
 

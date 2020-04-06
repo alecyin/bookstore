@@ -6,7 +6,6 @@ import com.bookstore.bean.Book;
 import com.bookstore.bean.Category;
 import com.bookstore.service.BookService;
 import com.bookstore.service.CategoryService;
-import com.bookstore.util.ReadFromPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

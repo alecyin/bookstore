@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 @Component
 public class LoginHandlerInterceptor implements HandlerInterceptor {
@@ -24,6 +25,10 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Object role = request.getSession().getAttribute("role");
         if (role == null) {
+            request.getRequestDispatcher("/c/login").forward(request, response);
+            return false;
+        }
+        if (request.getRequestURI().indexOf("/admins") != -1 && role.equals("customer")) {
             request.getRequestDispatcher("/c/login").forward(request, response);
             return false;
         }

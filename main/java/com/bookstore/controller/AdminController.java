@@ -104,6 +104,12 @@ public class AdminController {
         return "admins/page/admin/adminList";
     }
 
+    @RequestMapping(value = "/signOut", method = RequestMethod.GET)
+    public String signOut(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "admins/page/login/login";
+    }
+
     @RequestMapping(value = "/table-data", method = RequestMethod.GET)
     @ResponseBody
     public String listData(

@@ -50,12 +50,13 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">首页</a></li>
+                <li><a href="/">首页</a></li>
+                <li class="active"><a href="/more">搜索</a></li>
                 <li><a href="/c/order">我的订单</a></li>
                 <li><a href="/c/info">个人中心</a></li>
-                <li><a href="FriendLink.html">友情链接</a></li>
+                <li><a href="/c/recommend">我的推荐</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right hidden-sm">
+            <ul id="loginBar" class="nav navbar-nav navbar-right hidden-sm">
                 <li><a href="/c/login">登录</a></li>
                 <li><a href="/c/reg">注册</a></li>
                 <li>
@@ -78,6 +79,7 @@
             </div><!-- /input-group -->
           </div><!-- /.col-lg-6 -->
       </div><!-- /.row -->
+      <br/>
     <ul class="nav nav-tabs" id="myTabs">
         <c:if test="${not empty actived}">
             <c:forEach var="list1" begin="0" items="${caList}">
@@ -97,7 +99,7 @@
                 <li><a href="/more/${list1.id}">${list1.name}</a></li>
             </c:forEach>
         </c:if>
-        <a style="float: right;" class="btn btn-primary btn-sm" href="/more/${actived}" role="button">查看更多</a>
+        <!-- <a style="float: right;" class="btn btn-primary btn-sm" href="/more/${actived}" role="button">查看更多</a> -->
     </ul>
     <div class="row">
         <c:forEach var="list2" items="${bList}">
@@ -124,8 +126,8 @@
 </div>
 
 <!--footer-->
-<div class="navbar navbar-default navbar-static-bottom">
-    版权声明区
+<div style="text-align: center;line-height: 50px;" class="navbar navbar-default navbar-static-bottom">
+    copyright @2020 Recover
 </div>
 </body>
 
@@ -133,5 +135,13 @@
 <script>
     function search() {
         window.location.href = "/more/${actived}/keyword/" + $("#keyword").val();
+    }
+    if (window.localStorage.getItem("customer") != null) {
+        $("#loginBar").html("<li><a href='#' onclick='logout()'>退出登录</a></li><li><a href='/c/cart'>"
+        + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
+    }
+    function logout() {
+        window.location.href = "/customers/signOut";
+        localStorage.clear();
     }
 </script>

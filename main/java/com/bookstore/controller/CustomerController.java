@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,6 +94,12 @@ public class CustomerController {
         jsonObject.put("data", jsonArray);
         jsonObject.put("count", customerService.listCustomers().size());
         return jsonObject.toJSONString();
+    }
+
+    @RequestMapping(value = "/signOut", method = RequestMethod.GET)
+    public String signOut(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "customers/Home/login";
     }
 
 }

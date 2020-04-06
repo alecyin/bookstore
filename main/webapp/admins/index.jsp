@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<title>网上书店管理系统</title>
@@ -15,6 +16,7 @@
 	<link rel="stylesheet" href="/admins/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="/admins/css/index.css" media="all" />
 </head>
+
 <body class="main_body">
 	<div class="layui-layout layui-layout-admin">
 		<!-- 顶部 -->
@@ -28,28 +30,37 @@
 					<li class="layui-nav-item" data-menu="contentManagement">
 						<a href="javascript:;"><i class="seraph icon-caidan"></i><cite>bookstore</cite></a>
 						<dl class="layui-nav-child">
-							<dd class="layui-this" data-menu="contentManagement"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a></dd>
-							<dd data-menu="memberCenter"><a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a></dd>
-							<dd data-menu="seraphApi"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe705;">&#xe705;</i><cite>使用文档</cite></a></dd>
+							<dd class="layui-this" data-menu="contentManagement"><a href="javascript:;"><i
+										class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a></dd>
+							<dd data-menu="memberCenter"><a href="javascript:;"><i class="seraph icon-icon10"
+										data-icon="icon-icon10"></i><cite>用户中心</cite></a></dd>
+							<dd data-menu="seraphApi"><a href="javascript:;"><i class="layui-icon"
+										data-icon="&#xe705;">&#xe705;</i><cite>使用文档</cite></a></dd>
 						</dl>
 					</li>
 				</ul>
 				<ul class="layui-nav topLevelMenus" pc>
 					<li class="layui-nav-item layui-this" data-menu="contentManagement">
-						<a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a>
+						<a href="javascript:;"><i class="layui-icon"
+								data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a>
 					</li>
 				</ul>
-			    <!-- 顶部右侧菜单 -->
-			    <ul class="layui-nav top_menu">
+				<!-- 顶部右侧菜单 -->
+				<ul class="layui-nav top_menu">
 					<li class="layui-nav-item" pc>
-						<a href="javascript:;" class="clearCache"><i class="layui-icon" data-icon="&#xe640;">&#xe640;</i><cite>清除缓存</cite><span class="layui-badge-dot"></span></a>
+						<a href="javascript:;" class="clearCache"><i class="layui-icon"
+								data-icon="&#xe640;">&#xe640;</i><cite>清除缓存</cite><span
+								class="layui-badge-dot"></span></a>
 					</li>
 					<li class="layui-nav-item" id="userInfo">
 						<a href="javascript:;"><cite class="adminName">管理员</cite></a>
 						<dl class="layui-nav-child">
-							<dd><a href="javascript:;" data-url="/admins/changePass"><i class="seraph icon-xiugai" data-icon="icon-xiugai"></i><cite>修改密码</cite></a></dd>
-							<dd pc><a href="javascript:;" class="changeSkin"><i class="layui-icon">&#xe61b;</i><cite>更换皮肤</cite></a></dd>
-							<dd><a href="/admins/login" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
+							<dd><a href="javascript:;" data-url="/admins/changePass"><i class="seraph icon-xiugai"
+										data-icon="icon-xiugai"></i><cite>修改密码</cite></a></dd>
+							<dd pc><a href="javascript:;" class="changeSkin"><i
+										class="layui-icon">&#xe61b;</i><cite>更换皮肤</cite></a></dd>
+							<dd><a href="#" onclick="signOut()" class="signOut"><i
+										class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
 						</dl>
 					</li>
 				</ul>
@@ -60,7 +71,8 @@
 			<div class="navBar layui-side-scroll" id="navBar">
 				<ul class="layui-nav layui-nav-tree">
 					<li class="layui-nav-item layui-this">
-						<a href="javascript:;" data-url="/admins/page/main.html"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a>
+						<a href="javascript:;" data-url="/admins/page/main.html"><i class="layui-icon"
+								data-icon=""></i><cite>后台首页</cite></a>
 					</li>
 				</ul>
 			</div>
@@ -72,14 +84,17 @@
 					<li class="layui-this" lay-id=""><i class="layui-icon">&#xe68e;</i> <cite>后台首页</cite></li>
 				</ul>
 				<ul class="layui-nav closeBox">
-				  <li class="layui-nav-item">
-				    <a href="javascript:;"><i class="layui-icon caozuo">&#xe643;</i> 页面操作</a>
-				    <dl class="layui-nav-child">
-					  <dd><a href="javascript:;" class="refresh refreshThis"><i class="layui-icon">&#x1002;</i> 刷新当前</a></dd>
-				      <dd><a href="javascript:;" class="closePageOther"><i class="seraph icon-prohibit"></i> 关闭其他</a></dd>
-				      <dd><a href="javascript:;" class="closePageAll"><i class="seraph icon-guanbi"></i> 关闭全部</a></dd>
-				    </dl>
-				  </li>
+					<li class="layui-nav-item">
+						<a href="javascript:;"><i class="layui-icon caozuo">&#xe643;</i> 页面操作</a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:;" class="refresh refreshThis"><i class="layui-icon">&#x1002;</i>
+									刷新当前</a></dd>
+							<dd><a href="javascript:;" class="closePageOther"><i class="seraph icon-prohibit"></i>
+									关闭其他</a></dd>
+							<dd><a href="javascript:;" class="closePageAll"><i class="seraph icon-guanbi"></i> 关闭全部</a>
+							</dd>
+						</dl>
+					</li>
 				</ul>
 				<div class="layui-tab-content clildFrame">
 					<div class="layui-tab-item layui-show">
@@ -102,4 +117,10 @@
 	<script type="text/javascript" src="/admins/js/index.js"></script>
 	<script type="text/javascript" src="/admins/js/cache.js"></script>
 </body>
+
 </html>
+<script>
+	function signOut() {
+		window.location.href = "/admins/signOut";
+	}
+</script>

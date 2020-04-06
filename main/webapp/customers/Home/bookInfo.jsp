@@ -55,17 +55,18 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">首页</a></li>
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/more">搜索</a></li>
                     <li><a href="/c/order">我的订单</a></li>
                     <li><a href="/c/info">个人中心</a></li>
-                    <li><a href="FriendLink.html">友情链接</a></li>
+                    <li><a href="/c/recommend">我的推荐</a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right hidden-sm">
-                    <li><a href="/c/login">登录</a></li>
-                    <li><a href="/c/reg">注册</a></li>
-                    <li>
-                        <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
-                </ul>
+                <ul id="loginBar" class="nav navbar-nav navbar-right hidden-sm">
+                <li><a href="/c/login">登录</a></li>
+                <li><a href="/c/reg">注册</a></li>
+                <li>
+                    <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
+            </ul>
             </div>
             <!--/.nav-collapse -->
         </div>
@@ -164,9 +165,9 @@
     </div>
 
     <!--footer-->
-    <div class="navbar navbar-default navbar-static-bottom">
-        版权声明区
-    </div>
+    <div style="text-align: center;line-height: 50px;" class="navbar navbar-default navbar-static-bottom">
+    copyright @2020 Recover
+</div>
 </body>
 
 </html>
@@ -236,7 +237,15 @@
                 return;
             }
         }
-        window.localStorage.setItem(storage.length, str);
+        window.localStorage.setItem("book-" + storage.length, str);
         alert("添加成功");
+    }
+    if (window.localStorage.getItem("customer") != null) {
+        $("#loginBar").html("<li><a href='#' onclick='logout()'>退出登录</a></li><li><a href='/c/cart'>"
+        + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
+    }
+    function logout() {
+        window.location.href = "/customers/signOut";
+        localStorage.clear();
     }
 </script>

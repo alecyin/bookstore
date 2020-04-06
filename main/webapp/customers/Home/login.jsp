@@ -33,13 +33,14 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">首页</a></li>
+                <li><a href="/">首页</a></li>
+                <li ><a href="/more">搜索</a></li>
                 <li><a href="/c/order">我的订单</a></li>
                 <li><a href="/c/info">个人中心</a></li>
-                <li><a href="FriendLink.html">友情链接</a></li>
+                <li><a href="/c/recommend">我的推荐</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right hidden-sm">
-                <li><a href="/c/login">登录</a></li>
+            <ul id="loginBar" class="nav navbar-nav navbar-right hidden-sm">
+                <li class="active"><a href="/c/login">登录</a></li>
                 <li><a href="/c/reg">注册</a></li>
                 <li>
                     <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
@@ -82,8 +83,8 @@
 
 
 <!--footer-->
-<div class="navbar navbar-default navbar-static-bottom">
-    版权声明区
+<div style="text-align: center;line-height: 50px;" class="navbar navbar-default navbar-static-bottom">
+    copyright @2020 Recover
 </div>
 </body>
 </html>
@@ -106,11 +107,20 @@
                     alert("用户名或密码错误");
                 } else {
                     alert("登录成功");
+                    window.localStorage.setItem("customer", $("#name").val());
                     window.location.href = "/";
                 }
             },
             error: function (e) {
             }
         });
+    }
+    if (window.localStorage.getItem("customer") != null) {
+        $("#loginBar").html("<li><a href='#' onclick='logout()'>退出登录</a></li><li><a href='/c/cart'>"
+        + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
+    }
+    function logout() {
+        window.location.href = "/customers/signOut";
+        localStorage.clear();
     }
 </script>

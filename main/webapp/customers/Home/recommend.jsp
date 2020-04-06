@@ -50,11 +50,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">首页</a></li>
+                    <li><a href="/">首页</a></li>
                     <li ><a href="/more">搜索</a></li>
                     <li><a href="/c/order">我的订单</a></li>
                     <li><a href="/c/info">个人中心</a></li>
-                    <li><a href="/c/recommend">我的推荐</a></li>
+                    <li class="active"><a href="/c/recommend">我的推荐</a></li>
                 </ul>
                 <ul id="loginBar" class="nav navbar-nav navbar-right hidden-sm">
                 <li><a href="/c/login">登录</a></li>
@@ -66,48 +66,24 @@
             <!--/.nav-collapse -->
         </div>
     </div>
+
     <!--content-->
     <div class="container">
-        <div class="jumbotron">
-            <h1>图书商城</h1>
-            <p>...</p>
-            <p><a class="btn btn-primary btn-lg" href="/more/${actived}" role="button">了解更多</a></p>
-        </div>
-
-        <ul class="nav nav-tabs" id="myTabs">
-                <c:if test="${not empty actived}">
-                    <c:forEach var="list1" begin="0" items="${caList}">
-                        <c:choose>
-                            <c:when test="${actived == list1.id}">
-                                <li class="active"><a href="/r/${list1.id}">${list1.name}</a></li>
-                            </c:when>
-                            <c:otherwise>
-                                <li><a href="/r/${list1.id}">${list1.name}</a></li>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${empty actived}">
-                    <li class="active"><a href="/r/${caList[0].id}">${caList[0].name}</a></li>
-                    <c:forEach var="list1" begin="1" items="${caList}">
-                        <li><a href="/r/${list1.id}">${list1.name}</a></li>
-                    </c:forEach>
-                </c:if>
-                <a style="float: right;" class="btn btn-primary btn-sm" href="/more/${actived}" role="button">查看更多</a>
-        </ul>
         <div class="row">
-            <c:forEach var="list2" items="${bList}">
+            <c:forEach var="recommend" items="${recommendList}">
                 <div class="col-sm-4 col-md-2">
                     <div class="thumbnail">
-                        <a href="/info/${list2.id}">
+                        <a href="/info/${recommend.book.id}">
                             <img style="width: 100%; height: 200px; display: block;" alt="100%x200"
-                                src="/admins/images/${list2.thumbnail}.jpg" data-src="holder.js/100%x200"
+                                src="/admins/images/${recommend.book.thumbnail}.jpg" data-src="holder.js/100%x200"
                                 data-holder-rendered="false">
                         </a>
                         <div class="caption center">
-                            <p><span>${list2.name}</span></p>
-                            <p style="font-size: 12px;"><span>价格:</span><span>${list2.price} 元</span></p>
-                            <p><a class="btn btn-primary btn-block  btn-sm" role="button" href="/info/${list2.id}">查看详情</a>
+                            <p><span>${recommend.book.name}</span></p>
+                            <p>类别<span>${recommend.categoryName}</span></p>
+                            <p style="font-size: 12px;"><span>价格:</span><span>${recommend.book.price} 元</span></p>
+                            <p><a class="btn btn-primary btn-block  btn-sm" role="button"
+                                    href="/info/${recommend.book.id}">查看详情</a>
                             </p>
                         </div>
                     </div>
@@ -116,25 +92,6 @@
         </div>
 
 
-        <nav class="center">
-            <ul class="pagination  pagination-lg">
-                <!-- <li>
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">首页</span>
-                    </a>
-                </li> -->
-                <li><a href="/r/${actived}/p/1">1</a></li>
-                <li><a href="/r/${actived}/p/2">2</a></li>
-                <li><a href="/r/${actived}/p/3">3</a></li>
-                <li><a href="/r/${actived}/p/4">4</a></li>
-                <li><a href="/r/${actived}/p/5">5</a></li>
-                <!-- <li>
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true">末页</span>
-                    </a>
-                </li> -->
-            </ul>
-        </nav>
 
     </div>
 
@@ -146,7 +103,8 @@
 
 </html>
 <script>
-    if (window.localStorage.getItem("customer") != null) {
+
+if (window.localStorage.getItem("customer") != null) {
         $("#loginBar").html("<li><a href='#' onclick='logout()'>退出登录</a></li><li><a href='/c/cart'>"
         + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
     }
