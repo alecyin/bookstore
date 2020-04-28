@@ -108,6 +108,7 @@
                 } else {
                     alert("登录成功");
                     window.localStorage.setItem("customer", $("#name").val());
+                    window.localStorage.setItem("customerId", res.id);
                     window.location.href = "/";
                 }
             },
@@ -121,6 +122,7 @@
     }
     function logout() {
         window.location.href = "/customers/signOut";
-        localStorage.clear();
+        localStorage.removeItem(customerId);
+        localStorage.removeItem(customer);
     }
 </script>

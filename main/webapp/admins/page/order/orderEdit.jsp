@@ -75,6 +75,12 @@
                 <input type="text" class="layui-input" id="total" lay-verify="total" placeholder="请输入总价">
             </div>
         </div>
+        <!-- <div class="layui-form-item magt3">
+            <label class="layui-form-label">完结时间</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="finish" placeholder="yyyy-MM-dd">
+            </div>
+        </div> -->
         <div class="layui-form-item">
             <label class="layui-form-label"></label>
             <div class="layui-input-block">
@@ -105,6 +111,9 @@
                 }
             }
         });
+        laydate.render({
+            elem: '#finish'
+        });
         //选完文件后不自动上传
         upload.render({
             elem: '#test1'
@@ -122,9 +131,9 @@
                 console.log(res)
             }
         });
-        laydate.render({
-            elem: '#pubdate'
-        });
+        // laydate.render({
+        //     elem: '#pubdate'
+        // });
         form.on("submit(editOrders)", function (data) {
             //弹出loading
             var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
@@ -136,6 +145,7 @@
                     id: $("#id").val(),
                     orderNumber: $('#orderNumber').val(),
                     status: document.getElementById("status").value,
+                    // finish: $('#finish').val(),
                     total: $('#total').val()
                 }),
                 cache: false,

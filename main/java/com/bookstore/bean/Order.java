@@ -2,6 +2,7 @@ package com.bookstore.bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Order implements Serializable {
     private Long id;
@@ -17,6 +18,8 @@ public class Order implements Serializable {
     private String orderNumber;
 
     private BigDecimal total;
+
+    private Date finish;
 
     private static final long serialVersionUID = 1L;
 
@@ -74,6 +77,14 @@ public class Order implements Serializable {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public Date getFinish() {
+        return finish;
+    }
+
+    public void setFinish(Date finish) {
+        this.finish = finish;
     }
 
     @Override

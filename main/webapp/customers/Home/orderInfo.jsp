@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 
@@ -87,17 +89,17 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">首页</a></li>
-                    <li ><a href="/more">搜索</a></li>
+                    <li><a href="/more">搜索</a></li>
                     <li><a href="/c/order">我的订单</a></li>
                     <li><a href="/c/info">个人中心</a></li>
                     <li><a href="/c/recommend">我的推荐</a></li>
                 </ul>
                 <ul id="loginBar" class="nav navbar-nav navbar-right hidden-sm">
-                <li><a href="/c/login">登录</a></li>
-                <li><a href="/c/reg">注册</a></li>
-                <li>
-                    <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
-            </ul>
+                    <li><a href="/c/login">登录</a></li>
+                    <li><a href="/c/reg">注册</a></li>
+                    <li>
+                        <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
+                </ul>
             </div>
             <!--/.nav-collapse -->
         </div>
@@ -118,6 +120,23 @@
                     <tr>
                         <th>订单状态：</th>
                         <td>${orderDetail.status}</td>
+                    </tr>
+                    <c:choose>
+                        <c:when test="${orderDetail.status == '已完结'}">
+                            <tr>
+                                <th>完结日期：</th>
+                                <td>
+                                    <fmt:formatDate value="${orderDetail.finish}" pattern="yyyy年MM月dd日" />
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <tr>
+                        <th>收货人地址：</th>
+                        <td>${orderDetail.detail}</td>
                     </tr>
                     <tr>
                         <th>收货人姓名：</th>
@@ -143,7 +162,7 @@
                         <th>小计/元</th>
                     </tr>
                     <c:if test="${not empty orderDetail.book}">
-            
+
                         <c:forEach var="bookList" begin="0" items="${orderDetail.book}">
                             <tr>
                                 <td>${bookList.bookName}</td>
@@ -152,8 +171,8 @@
                                 <td>${bookList.smallCnt}</td>
                             </tr>
                         </c:forEach>
- 
-                </c:if>
+
+                    </c:if>
                     <tr></tr>
                 </table>
             </div>
@@ -200,7 +219,7 @@
             data: JSON.stringify({
                 id: id
             }),
-            async:false,
+            async: false,
             cache: false,
             headers: {
                 'Content-Type': 'application/json'
@@ -217,10 +236,11 @@
     }
     if (window.localStorage.getItem("customer") != null) {
         $("#loginBar").html("<li><a href='#' onclick='logout()'>退出登录</a></li><li><a href='/c/cart'>"
-        + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
+            + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
     }
     function logout() {
         window.location.href = "/customers/signOut";
-        localStorage.clear();
+        localStorage.removeItem(customerId);
+        localStorage.removeItem(customer);
     }
 </script>

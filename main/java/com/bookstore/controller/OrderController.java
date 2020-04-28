@@ -66,14 +66,31 @@ public class OrderController {
     public Map finish(@RequestBody Order order) {
         Map<String, Object> res = new HashMap<>();
         order = orderService.selectByPrimaryKey(order.getId());
+        order.setFinish(new Date());
         order.setStatus("已完结");
+        updateSales(order);
         res.put("code", orderService.updateByPrimaryKeySelective(order));
         return res;
+    }
+
+    public void updateSales(Order order) {
+        String[] books = orderService.selectByPrimaryKey(order.getId()).getBooks().split("\\|");
+        for (String str : books) {
+            int amount = Integer.valueOf(str.split("-")[1]);
+            Book book = bookService.selectByPrimaryKey(Long.valueOf(str.split("-")[0]));
+            book.setSales(book.getSales() == null ? amount : book.getSales() + amount);
+            bookService.updateByPrimaryKeySelective(book);
+        }
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public void edit(@RequestBody Order order) {
+        if (!orderService.selectByPrimaryKey(order.getId()).getStatus().equals("已完结")
+                && order.getStatus().equals("已完结")) {
+            order.setFinish(new Date());
+            updateSales(order);
+        }
         orderService.updateByPrimaryKeySelective(order);
     }
 
@@ -126,6 +143,7 @@ public class OrderController {
             jsonObject1.put("author", book.getAuthor());
             jsonObject1.put("price", book.getPrice());
             jsonObject1.put("isbn", book.getIsbn());
+            jsonObject1.put("publish", book.getPublish());
             jsonObject1.put("pubdate", book.getPubdate());
             jsonObject1.put("categoryName", categoryService.selectByPrimaryKey(book.getCategoryId()).getName());
             jsonObject1.put("amount", Long.valueOf(str.split("-")[1]));
@@ -161,6 +179,7 @@ public class OrderController {
             jsonObject1.put("total", order.getTotal());
             jsonObject1.put("status", order.getStatus());
             jsonObject1.put("orderNumber", order.getOrderNumber());
+            jsonObject1.put("finish", order.getFinish());
             Customer customer = customerService.selectByPrimaryKey(order.getCustomerId());
             jsonObject1.put("customerName", customer.getName());
             Address address = addressService.selectByPrimaryKey(order.getAddressId());

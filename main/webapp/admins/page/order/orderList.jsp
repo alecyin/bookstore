@@ -67,6 +67,12 @@
 					{ field: 'customerName', title: '顾客名称' },
 					{ field: 'address', title: '收货地址' },
 					{ field: 'total', title: '总价格/元' },
+					{ field: 'finish', title: '完结时间',templet:function (d){
+						if (d.finish === "" || d.finish === undefined) {
+							return "未完结";
+						}
+						return DateFormat(d.finish);
+					} },
 					{ title: '操作', width: 250, templet: '#orderListBar', fixed: "right", align: "center" }
 				]]
 			});
@@ -138,6 +144,7 @@
 						body.find("#orderNumber").val(edit.orderNumber);
 						body.find("#customerName").val(edit.customerName);
 						body.find("#address").val(edit.address);
+						// body.find("#finish").val(DateFormat(edit.finish));
 						form.render();
 						setTimeout(function () {
 							layui.layer.tips('点击此处返回订单列表', '.layui-layer-setwin .layui-layer-close', {

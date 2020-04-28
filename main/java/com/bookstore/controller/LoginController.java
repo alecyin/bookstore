@@ -35,7 +35,7 @@ public class LoginController {
         if ((customer1 = customerService.selectByName(customer.getName())) != null &&
                 customer1.getPwd().equals(DigestUtils.md5DigestAsHex(customer.getPwd().getBytes()))) {
             map.put("code", 1);
-            map.put("data", customer1);
+            map.put("id", customer1.getId());
             HttpSession session = request.getSession();
             session.setAttribute("role","customer");
             session.setAttribute("userId", customer1.getId());

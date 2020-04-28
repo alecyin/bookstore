@@ -13,6 +13,8 @@ public class Book implements Serializable {
 
     private String isbn;
 
+    private String publish;
+
     private String author;
 
     private Date pubdate;
@@ -22,6 +24,8 @@ public class Book implements Serializable {
     private BigDecimal price;
 
     private String sketch;
+
+    public Integer sales;
 
     private static final long serialVersionUID = 1L;
 
@@ -95,6 +99,22 @@ public class Book implements Serializable {
 
     public void setSketch(String sketch) {
         this.sketch = sketch;
+    }
+
+    public String getPublish() {
+        return publish;
+    }
+
+    public void setPublish(String publish) {
+        this.publish = publish;
+    }
+
+    public Integer getSales() {
+        return sales;
+    }
+
+    public void setSales(Integer sales) {
+        this.sales = sales;
     }
 
     @Override

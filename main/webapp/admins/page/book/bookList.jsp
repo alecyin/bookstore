@@ -66,7 +66,8 @@
 				{ field: 'name', title: '书籍名称' },
 				{ field: 'author', title: '作者' },
 				{ field: 'categoryName', title: '类别' },
-				{ field: 'isbn', title: '出版社' },
+				{ field: 'isbn', title: 'ISBN' },
+				{ field: 'publish', title: '出版社' },
 				{ field: 'pubdate', title: '出版日期',templet:function (d){
 						return DateFormat(d.pubdate);
 					} },
@@ -84,6 +85,7 @@
 				},
 				{ field: 'sketch', title: '简介' },
 				{ field: 'price', title: '单价/元' },
+				{ field: 'sales', title: '销量/本' },
 				{ title: '操作', width: 170, templet: '#bookListBar', fixed: "right", align: "center" }
 			]]
 		});
@@ -156,6 +158,7 @@
 					body.find("#pubdate").val(DateFormat(edit.pubdate));
 					body.find("#sketch").val(edit.sketch);
 					body.find("#isbn").val(edit.isbn);
+					body.find("#publish").val(edit.publish);
 					body.find("#price").val(edit.price);
 					body.find("#category").val(edit.category);
 					form.render();

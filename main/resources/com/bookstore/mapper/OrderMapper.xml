@@ -9,9 +9,10 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
     <result column="total" jdbcType="DECIMAL" property="total" />
+    <result column="finish" jdbcType="TIMESTAMP" property="finish" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, books, customer_id, address_id, `status`, order_number, total
+    id, books, customer_id, address_id, `status`, order_number, total, finish
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -28,10 +29,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into `order` (books, customer_id, address_id,
-      `status`, order_number, total
+      `status`, order_number, total, finish
       )
     values (#{books,jdbcType=VARCHAR}, #{customerId,jdbcType=BIGINT}, #{addressId,jdbcType=BIGINT}, 
-      #{status,jdbcType=VARCHAR}, #{orderNumber,jdbcType=VARCHAR}, #{total,jdbcType=DECIMAL}
+      #{status,jdbcType=VARCHAR}, #{orderNumber,jdbcType=VARCHAR}, #{total,jdbcType=DECIMAL}, #{finish,jdbcType=TIMESTAMP}
       )
   </insert>
   <select id="listOrdersByCustomerId" parameterType="java.lang.Long"  resultMap="BaseResultMap">
@@ -85,6 +86,9 @@
       <if test="total != null">
         total,
       </if>
+      <if test="finish != null">
+        finish,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="books != null">
@@ -104,6 +108,9 @@
       </if>
       <if test="total != null">
         #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="finish != null">
+        #{finish,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -126,7 +133,10 @@
         order_number = #{orderNumber,jdbcType=VARCHAR},
       </if>
       <if test="total != null">
-        total = #{total,jdbcType=DECIMAL},
+      total = #{total,jdbcType=DECIMAL},
+    </if>
+      <if test="finish != null">
+        finish = #{finish,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -138,7 +148,8 @@
       address_id = #{addressId,jdbcType=BIGINT},
       `status` = #{status,jdbcType=VARCHAR},
       order_number = #{orderNumber,jdbcType=VARCHAR},
-      total = #{total,jdbcType=DECIMAL}
+      total = #{total,jdbcType=DECIMAL},
+      finish = #{finish,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

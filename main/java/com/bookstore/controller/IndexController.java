@@ -109,7 +109,8 @@ public class IndexController {
         for (Book book : bList) {
             if (book.getName().indexOf(keyword) != -1 ||
                     book.getAuthor().indexOf(keyword) != -1 ||
-                    book.getIsbn().indexOf(keyword) != -1) {
+                    book.getIsbn().indexOf(keyword) != -1 ||
+                    (book.getPublish() != null && book.getPublish().indexOf(keyword) != -1)) {
                     res.add(book);
             }
         }
@@ -192,6 +193,7 @@ public class IndexController {
         Order order = orderService.selectByPrimaryKey(orderId);
         JSONObject res = new JSONObject();
         res.put("orderNumber", order.getOrderNumber());
+        res.put("finish", order.getFinish());
         res.put("status", order.getStatus());
         res.put("id", order.getId());
         res.put("total", order.getTotal());
@@ -223,24 +225,29 @@ public class IndexController {
     public ModelAndView recommend(HttpServletRequest request) {
         List<Order> orderList = orderService.
                 listOrdersByCustomerId((Long) request.getSession().getAttribute("userId"));
-        List<Integer> categoryList = new ArrayList<>();
         Map<Long, Integer> map = new HashMap<>();
-        for (Order order : orderList) {
-            String[] books = order.getBooks().split("\\|");
-            for (String str : books) {
-                Long categoryId = bookService.
-                        selectByPrimaryKey(Long.valueOf(str.split("-")[0])).getCategoryId();
-                int amount = Integer.valueOf(str.split("-")[1]);
-                map.put(categoryId, map.getOrDefault(categoryId, 0) + amount);
+        if (orderList != null && orderList.size() != 0) {
+            for (Order order : orderList) {
+                String[] books = order.getBooks().split("\\|");
+                for (String str : books) {
+                    Long categoryId = bookService.
+                            selectByPrimaryKey(Long.valueOf(str.split("-")[0])).getCategoryId();
+                    int amount = Integer.valueOf(str.split("-")[1]);
+                    map.put(categoryId, map.getOrDefault(categoryId, 0) + amount);
+                }
+            }
+        } else {
+            for (Category category: categoryService.listCategories()) {
+                map.put(category.getId(), 0);
             }
         }
-        List<Map.Entry<Long, Integer>> list = new ArrayList<Map.Entry<Long, Integer>>(map.entrySet());
+        List<Map.Entry<Long, Integer>> list = new ArrayList<>(map.entrySet());
         Collections.sort(list, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         JSONArray jsonArray = new JSONArray();
         for (Map.Entry<Long, Integer> e: list) {
             Long categoryId = e.getKey();
-            JSONObject jsonObject1 = new JSONObject();
             for (Book book: bookService.listBooksByCategory(categoryId)) {
+                JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("book", book);
                 jsonObject1.put("categoryName", categoryService.selectByPrimaryKey(book.getCategoryId()).getName());
                 jsonArray.add(jsonObject1);

@@ -28,6 +28,12 @@
         .pagination {
             background: #cccccc;
         }
+
+        .line-limit-length {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     </style>
     <script>
         $(function () {
@@ -70,7 +76,7 @@
     <!--content-->
     <div class="container">
         <div class="row">
-            <c:forEach var="recommend" items="${recommendList}">
+            <c:forEach var="recommend" begin="0" items="${recommendList}">
                 <div class="col-sm-4 col-md-2">
                     <div class="thumbnail">
                         <a href="/info/${recommend.book.id}">
@@ -79,9 +85,10 @@
                                 data-holder-rendered="false">
                         </a>
                         <div class="caption center">
-                            <p><span>${recommend.book.name}</span></p>
+                            <p class="line-limit-length"><span>${recommend.book.name}</span></p>
                             <p>类别<span>${recommend.categoryName}</span></p>
                             <p style="font-size: 12px;"><span>价格:</span><span>${recommend.book.price} 元</span></p>
+                            <p style="font-size: 12px;"><span>销量:</span><span>${recommend.book.sales} 本</span></p>
                             <p><a class="btn btn-primary btn-block  btn-sm" role="button"
                                     href="/info/${recommend.book.id}">查看详情</a>
                             </p>
@@ -90,9 +97,6 @@
                 </div>
             </c:forEach>
         </div>
-
-
-
     </div>
 
     <!--footer-->
@@ -110,6 +114,7 @@ if (window.localStorage.getItem("customer") != null) {
     }
     function logout() {
         window.location.href = "/customers/signOut";
-        localStorage.clear();
+        localStorage.removeItem(customerId);
+        localStorage.removeItem(customer);
     }
 </script>

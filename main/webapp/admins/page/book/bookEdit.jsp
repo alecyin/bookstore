@@ -57,9 +57,15 @@
             </div>
         </div>
         <div class="layui-form-item magt3">
+            <label class="layui-form-label">ISBN</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" id="isbn" lay-verify="isbn" placeholder="请输入ISBN">
+            </div>
+        </div>
+        <div class="layui-form-item magt3">
             <label class="layui-form-label">出版社</label>
             <div class="layui-input-block">
-                <input type="text" class="layui-input" id="isbn" lay-verify="isbn" placeholder="请输入出版社名称">
+                <input type="text" class="layui-input" id="publish" lay-verify="publish" placeholder="请输入出版社名称">
             </div>
         </div>
         <div class="layui-form-item magt3">
@@ -144,6 +150,7 @@
                     author: $('#author').val(),
                     sketch: $('#sketch').val(),
                     isbn: $('#isbn').val(),
+                    publish: $('#publish').val(),
                     pubdate: $('#pubdate').val(),
                     price: $('#price').val()
                 }),

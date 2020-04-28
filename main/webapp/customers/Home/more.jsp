@@ -28,6 +28,12 @@
         .pagination {
             background: #cccccc;
         }
+
+        .line-limit-length {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     </style>
     <script>
         $(function () {
@@ -72,7 +78,7 @@
     <div class="row">
         <div class="col-lg-6  col-lg-offset-3">
             <div class="input-group">
-              <input type="text" id="keyword" class="form-control" placeholder="书名/作者/出版社">
+              <input type="text" id="keyword" class="form-control" placeholder="书名/作者/出版社/ISBN">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button" onclick="search()">搜索</button>
               </span>
@@ -111,8 +117,9 @@
                              data-holder-rendered="false">
                     </a>
                     <div class="caption center">
-                        <p><span>${list2.name}</span></p>
+                        <p class="line-limit-length"><span>${list2.name}</span></p>
                         <p style="font-size: 12px;"><span>价格:</span><span>${list2.price} 元</span></p>
+                        <p style="font-size: 12px;"><span>销量:</span><span>${list2.sales} 本</span></p>
                         <p><a class="btn btn-primary btn-block  btn-sm" role="button" href="/info/${list2.id}">查看详情</a>
                         </p>
                     </div>
@@ -142,6 +149,7 @@
     }
     function logout() {
         window.location.href = "/customers/signOut";
-        localStorage.clear();
+        localStorage.removeItem(customerId);
+        localStorage.removeItem(customer);
     }
 </script>

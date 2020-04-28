@@ -45,6 +45,7 @@ public class BookController {
                    @RequestParam("category_id") Long categoryId,
                    @RequestParam("sketch") String sketch,
                    @RequestParam("isbn") String isbn,
+                   @RequestParam("publish") String publish,
                    @RequestParam("price") BigDecimal price,
                    @RequestParam("pubdate") String pubdate,
                    HttpServletRequest request) throws IOException, ParseException {
@@ -54,6 +55,7 @@ public class BookController {
         book.setCategoryId(categoryId);
         book.setPrice(price);
         book.setIsbn(isbn);
+        book.setPublish(publish);
         book.setPubdate(new SimpleDateFormat("yyyy-MM-dd").parse(pubdate));
         book.setSketch(sketch);
         Map<String, Object> map = new HashMap<>();
@@ -143,6 +145,8 @@ public class BookController {
             jsonObject1.put("categoryId", book.getCategoryId());
             jsonObject1.put("price", book.getPrice());
             jsonObject1.put("isbn", book.getIsbn());
+            jsonObject1.put("sales", book.getSales());
+            jsonObject1.put("publish", book.getPublish());
             jsonObject1.put("categoryName", categoryService.
                     selectByPrimaryKey(book.getCategoryId()).getName());
             jsonArray.add(jsonObject1);

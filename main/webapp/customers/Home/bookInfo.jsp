@@ -80,8 +80,10 @@
             <div class="caption right">
                 <pp>${book.name}</p>
                     <p>作者：${book.author}</p>
-                    <p>出版社：${book.isbn}</p>
+                    <p>出版社：${book.publish}</p>
+                    <p>ISBN：${book.isbn} </p>
                     <p>价格：${book.price} 元</p>
+                    <p>销量${book.sales} 本</p>
                     <p>出版日期：
                         <fmt:formatDate value="${book.pubdate}" pattern="yyyy年MM月dd日" />
                     </p>
@@ -229,6 +231,7 @@
     });
     function addCart(str) {
         var storage = window.localStorage;
+        var customerId = window.localStorage.getItem("customerId");
         for (var j = 0, len = storage.length; j < len; j++) {
             var key = storage.key(j);
             var value = storage.getItem(key);
@@ -237,7 +240,7 @@
                 return;
             }
         }
-        window.localStorage.setItem("book-" + storage.length, str);
+        window.localStorage.setItem(customerId + "-book-" + storage.length, str);
         alert("添加成功");
     }
     if (window.localStorage.getItem("customer") != null) {
@@ -246,6 +249,7 @@
     }
     function logout() {
         window.location.href = "/customers/signOut";
-        localStorage.clear();
+        localStorage.removeItem(customerId);
+        localStorage.removeItem(customer);
     }
 </script>

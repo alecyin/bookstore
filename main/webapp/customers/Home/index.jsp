@@ -28,6 +28,12 @@
         .pagination {
             background: #cccccc;
         }
+
+        .line-limit-length {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     </style>
     <script>
         $(function () {
@@ -51,17 +57,17 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">首页</a></li>
-                    <li ><a href="/more">搜索</a></li>
+                    <li><a href="/more">搜索</a></li>
                     <li><a href="/c/order">我的订单</a></li>
                     <li><a href="/c/info">个人中心</a></li>
                     <li><a href="/c/recommend">我的推荐</a></li>
                 </ul>
                 <ul id="loginBar" class="nav navbar-nav navbar-right hidden-sm">
-                <li><a href="/c/login">登录</a></li>
-                <li><a href="/c/reg">注册</a></li>
-                <li>
-                    <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
-            </ul>
+                    <li><a href="/c/login">登录</a></li>
+                    <li><a href="/c/reg">注册</a></li>
+                    <li>
+                        <a href="/c/cart"><span class="glyphicon glyphicon-shopping-cart">购物车</span></a></li>
+                </ul>
             </div>
             <!--/.nav-collapse -->
         </div>
@@ -75,25 +81,25 @@
         </div>
 
         <ul class="nav nav-tabs" id="myTabs">
-                <c:if test="${not empty actived}">
-                    <c:forEach var="list1" begin="0" items="${caList}">
-                        <c:choose>
-                            <c:when test="${actived == list1.id}">
-                                <li class="active"><a href="/r/${list1.id}">${list1.name}</a></li>
-                            </c:when>
-                            <c:otherwise>
-                                <li><a href="/r/${list1.id}">${list1.name}</a></li>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${empty actived}">
-                    <li class="active"><a href="/r/${caList[0].id}">${caList[0].name}</a></li>
-                    <c:forEach var="list1" begin="1" items="${caList}">
-                        <li><a href="/r/${list1.id}">${list1.name}</a></li>
-                    </c:forEach>
-                </c:if>
-                <a style="float: right;" class="btn btn-primary btn-sm" href="/more/${actived}" role="button">查看更多</a>
+            <c:if test="${not empty actived}">
+                <c:forEach var="list1" begin="0" items="${caList}">
+                    <c:choose>
+                        <c:when test="${actived == list1.id}">
+                            <li class="active"><a href="/r/${list1.id}">${list1.name}</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="/r/${list1.id}">${list1.name}</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </c:if>
+            <c:if test="${empty actived}">
+                <li class="active"><a href="/r/${caList[0].id}">${caList[0].name}</a></li>
+                <c:forEach var="list1" begin="1" items="${caList}">
+                    <li><a href="/r/${list1.id}">${list1.name}</a></li>
+                </c:forEach>
+            </c:if>
+            <a style="float: right;" class="btn btn-primary btn-sm" href="/more/${actived}" role="button">查看更多</a>
         </ul>
         <div class="row">
             <c:forEach var="list2" items="${bList}">
@@ -105,9 +111,11 @@
                                 data-holder-rendered="false">
                         </a>
                         <div class="caption center">
-                            <p><span>${list2.name}</span></p>
+                            <p class="line-limit-length"><span>${list2.name}</span></p>
                             <p style="font-size: 12px;"><span>价格:</span><span>${list2.price} 元</span></p>
-                            <p><a class="btn btn-primary btn-block  btn-sm" role="button" href="/info/${list2.id}">查看详情</a>
+                            <p style="font-size: 12px;"><span>销量:</span><span>${list2.sales} 本</span></p>
+                            <p><a class="btn btn-primary btn-block  btn-sm" role="button"
+                                    href="/info/${list2.id}">查看详情</a>
                             </p>
                         </div>
                     </div>
@@ -140,18 +148,19 @@
 
     <!--footer-->
     <div style="text-align: center;line-height: 50px;" class="navbar navbar-default navbar-static-bottom">
-    copyright @2020 Recover
-</div>
+        copyright @2020 Recover
+    </div>
 </body>
 
 </html>
 <script>
     if (window.localStorage.getItem("customer") != null) {
         $("#loginBar").html("<li><a href='#' onclick='logout()'>退出登录</a></li><li><a href='/c/cart'>"
-        + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
+            + "<span class='glyphicon glyphicon-shopping-cart'>购物车</span></a></li>");
     }
     function logout() {
         window.location.href = "/customers/signOut";
-        localStorage.clear();
+        localStorage.removeItem(customerId);
+        localStorage.removeItem(customer);
     }
 </script>
