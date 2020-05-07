@@ -54,6 +54,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> selectCurWeek() {
+        return orderMapper.selectCurWeek();
+    }
+
+    @Override
     public int updateByPrimaryKey(Order record) {
         return 0;
     }

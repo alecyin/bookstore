@@ -24,5 +24,7 @@ public interface OrderService {
 
     List<Order> listOrders();
 
+    List<Order> selectCurWeek();
+
     int updateByPrimaryKey(Order record);
 }

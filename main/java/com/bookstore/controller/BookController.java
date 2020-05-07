@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bookstore.bean.Book;
 import com.bookstore.bean.Category;
+import com.bookstore.bean.Order;
 import com.bookstore.service.BookService;
 import com.bookstore.service.CategoryService;
+import com.bookstore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -36,6 +39,8 @@ public class BookController {
     BookService bookService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    OrderService orderService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
@@ -157,4 +162,135 @@ public class BookController {
         return jsonObject.toJSONString();
     }
 
+    @RequestMapping(value = "/sales", method = RequestMethod.GET)
+    public String sales() {
+        return "admins/page/sales/sales";
+    }
+
+    @RequestMapping(value = "/sales-count", method = RequestMethod.GET)
+    @ResponseBody
+    public String salesCount(@RequestParam(value = "key", required = false) String keyword,
+                             @RequestParam(value = "month", required = false, defaultValue = "-1") String month,
+                             @RequestParam(value = "year", required = false, defaultValue = "-1") String year,
+                             @RequestParam("page") int page,
+                             @RequestParam("limit") int limit) {
+        HashMap<Long, JSONObject> weekMap = new HashMap<>();
+        for (Order order: orderService.selectCurWeek()) {
+            String[] bookStrs = order.getBooks().split("\\|");
+            for (String str : bookStrs) {
+                Long bookId = Long.valueOf(str.split("-")[0]);
+                if (weekMap.get(bookId) == null) {
+                    weekMap.put(bookId, new JSONObject());
+                }
+                JSONObject jsonObject = weekMap.get(bookId);
+                Book book2 = bookService.selectByPrimaryKey(bookId);
+                long weekAmount = Long.valueOf(str.split("-")[1]);
+                jsonObject.put("weekAmount", Long.valueOf(String.valueOf(jsonObject.getOrDefault("weekAmount", 0)) ) + weekAmount);
+                jsonObject.put("weekPrice", new BigDecimal(String.valueOf(jsonObject.getOrDefault("weekPrice", 0)))
+                        .add(book2.getPrice().multiply(new BigDecimal(str.split("-")[1]))));
+            }
+        }
+
+        Calendar cal = Calendar.getInstance();
+        String month1 = String.format("%04d", cal.get(Calendar.YEAR)) + String.format("%02d", cal.get(Calendar.MONTH) + 1);
+        if (!month.equals("-1")) {
+            month1 = month.replaceAll("-", "");
+        }
+        HashMap<Long, JSONObject> monthMap = new HashMap<>();
+        for (Order order: getMonth(month1)) {
+            String[] bookStrs = order.getBooks().split("\\|");
+            for (String str : bookStrs) {
+                Long bookId = Long.valueOf(str.split("-")[0]);
+                if (monthMap.get(bookId) == null) {
+                    monthMap.put(bookId, new JSONObject());
+                }
+                JSONObject jsonObject = monthMap.get(bookId);
+                Book book2 = bookService.selectByPrimaryKey(bookId);
+                long monthAmount = Long.valueOf(str.split("-")[1]);
+                jsonObject.put("monthAmount", Long.valueOf(String.valueOf(jsonObject.getOrDefault("monthAmount", 0)) ) + monthAmount);
+                jsonObject.put("monthPrice", new BigDecimal(String.valueOf(jsonObject.getOrDefault("monthPrice", 0)))
+                        .add(book2.getPrice().multiply(new BigDecimal(str.split("-")[1]))));
+            }
+        }
+
+        HashMap<Long, JSONObject> yearMap = new HashMap<>();
+        String year1 = String.format("%04d", cal.get(Calendar.YEAR));
+        if (!year.equals("-1")) {
+            year1 = year;
+        }
+        for (Order order: getYear(year1)) {
+            String[] bookStrs = order.getBooks().split("\\|");
+            for (String str : bookStrs) {
+                Long bookId = Long.valueOf(str.split("-")[0]);
+                if (yearMap.get(bookId) == null) {
+                    yearMap.put(bookId, new JSONObject());
+                }
+                JSONObject jsonObject = yearMap.get(bookId);
+                Book book2 = bookService.selectByPrimaryKey(bookId);
+                long yearMount = Long.valueOf(str.split("-")[1]);
+                jsonObject.put("yearMount", Long.valueOf(String.valueOf(jsonObject.getOrDefault("yearMount", 0)) ) + yearMount);
+                jsonObject.put("yearPrice", new BigDecimal(String.valueOf(jsonObject.getOrDefault("yearPrice", 0)))
+                        .add(book2.getPrice().multiply(new BigDecimal(str.split("-")[1]))));
+            }
+        }
+        JSONObject jsonObject = new JSONObject();
+        Map<String, Object> map = new HashMap<>();
+        map.put("keyword", keyword);
+        map.put("currentIndex", (page - 1) * limit);
+        map.put("pageSize", limit);
+        JSONArray jsonArray = new JSONArray();
+        for (Book book : bookService.listBooksByPage(map)) {
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("id", book.getId());
+            jsonObject1.put("name", book.getName());
+            jsonObject1.put("price", book.getPrice());
+            jsonObject1.put("sales", book.getSales());
+            jsonObject1.put("categoryName", categoryService.
+                    selectByPrimaryKey(book.getCategoryId()).getName());
+            jsonObject1.put("weekAmount", weekMap.getOrDefault(book.getId(), new JSONObject()).getOrDefault("weekAmount",0));
+            jsonObject1.put("weekPrice", weekMap.getOrDefault(book.getId(), new JSONObject()).getOrDefault("weekPrice",0));
+            jsonObject1.put("monthAmount", monthMap.getOrDefault(book.getId(), new JSONObject()).getOrDefault("monthAmount",0));
+            jsonObject1.put("monthPrice", monthMap.getOrDefault(book.getId(), new JSONObject()).getOrDefault("monthPrice",0));
+            jsonObject1.put("yearAmount", yearMap.getOrDefault(book.getId(), new JSONObject()).getOrDefault("yearMount",0));
+            jsonObject1.put("yearPrice", yearMap.getOrDefault(book.getId(), new JSONObject()).getOrDefault("yearPrice",0));
+            jsonArray.add(jsonObject1);
+        }
+        jsonObject.put("code", 0);
+        jsonObject.put("data", jsonArray);
+        jsonObject.put("count", bookService.listBooks().size());
+        return jsonObject.toJSONString();
+
+    }
+
+    public List<Order> getMonth(String ym) {
+        List<Order> list = orderService.listOrders();
+        List<Order> list2 = new ArrayList<>();
+        for (Order order:list) {
+            if (order.getFinish() == null) {
+                continue;
+            }
+            DateFormat df= new SimpleDateFormat("yyyyMM");
+            String str_time =df.format(order.getFinish());
+            if (ym.equals(str_time)) {
+                list2.add(order);
+            }
+        }
+        return list2;
+    }
+
+    public List<Order> getYear(String y) {
+        List<Order> list = orderService.listOrders();
+        List<Order> list2 = new ArrayList<>();
+        for (Order order:list) {
+            if (order.getFinish() == null) {
+                continue;
+            }
+            DateFormat df= new SimpleDateFormat("yyyy");
+            String str_time =df.format(order.getFinish());
+            if (y.equals(str_time)) {
+                list2.add(order);
+            }
+        }
+        return list2;
+    }
 }

@@ -22,6 +22,8 @@ public interface OrderMapper {
 
     List<Order> listOrdersByCustomerId(Long customerId);
 
+    List<Order> selectCurWeek();
+
     List<Order> listOrdersByPage(Map<String, Object> map);
 
     List<Order> listOrders();

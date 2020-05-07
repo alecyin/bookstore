@@ -39,6 +39,11 @@
 			"icon": "icon-text",
 			"href": "/messages/list",
 			"spread": false
+		},{
+			"title": "销量统计",
+			"icon": "icon-text",
+			"href": "/books/sales",
+			"spread": false
 		}
 	]
 }
