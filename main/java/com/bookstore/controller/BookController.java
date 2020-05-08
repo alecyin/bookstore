@@ -176,6 +176,9 @@ public class BookController {
                              @RequestParam("limit") int limit) {
         HashMap<Long, JSONObject> weekMap = new HashMap<>();
         for (Order order: orderService.selectCurWeek()) {
+            if (order.getFinish() == null) {
+                continue;
+            }
             String[] bookStrs = order.getBooks().split("\\|");
             for (String str : bookStrs) {
                 Long bookId = Long.valueOf(str.split("-")[0]);
@@ -198,6 +201,9 @@ public class BookController {
         }
         HashMap<Long, JSONObject> monthMap = new HashMap<>();
         for (Order order: getMonth(month1)) {
+            if (order.getFinish() == null) {
+                continue;
+            }
             String[] bookStrs = order.getBooks().split("\\|");
             for (String str : bookStrs) {
                 Long bookId = Long.valueOf(str.split("-")[0]);
@@ -219,6 +225,9 @@ public class BookController {
             year1 = year;
         }
         for (Order order: getYear(year1)) {
+            if (order.getFinish() == null) {
+                continue;
+            }
             String[] bookStrs = order.getBooks().split("\\|");
             for (String str : bookStrs) {
                 Long bookId = Long.valueOf(str.split("-")[0]);
