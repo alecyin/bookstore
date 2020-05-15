@@ -114,7 +114,7 @@ if (window.localStorage.getItem("customer") != null) {
     }
     function logout() {
         window.location.href = "/customers/signOut";
-        localStorage.removeItem(customerId);
-        localStorage.removeItem(customer);
+        localStorage.removeItem("customerId");
+        localStorage.removeItem("customer");
     }
 </script>
